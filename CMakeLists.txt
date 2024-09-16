@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Define project details
-project(MainProject VERSION 1.0)
+project(MainProject VERSION 1.0 LANGUAGES CXX)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -30,20 +30,27 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_link_options(-fsanitize=address)
 endif()
 
-# Find and link SFML
-find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+# Fetch SFML from GitHub using FetchContent
+include(FetchContent)
+FetchContent_Declare(
+    SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 2.6.x  # Make sure to specify the correct version
+    GIT_SHALLOW ON
+)
 
-# Link SFML libraries
-target_link_libraries(Main sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+# Make the SFML library available
+FetchContent_MakeAvailable(SFML)
+
+# Link SFML to the main executable
+target_link_libraries(Main PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
 # Platform-specific settings
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # macOS specific settings (optional, adjust if needed)
-
-    # For Homebrew installations of SFML
     include_directories(/opt/homebrew/include)
-    target_link_libraries(Main /opt/homebrew/lib/libsfml-system.dylib /opt/homebrew/lib/libsfml-window.dylib /opt/homebrew/lib/libsfml-graphics.dylib /opt/homebrew/lib/libsfml-audio.dylib /opt/homebrew/lib/libsfml-network.dylib)
-
+    target_link_libraries(Main PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+    
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # Windows specific settings (assumes SFML is installed and in PATH)
     find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
@@ -52,7 +59,16 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     include_directories(${SFML_INCLUDE_DIR})
 
     # Link SFML libraries
-    target_link_libraries(Main ${SFML_LIBRARIES})
+    target_link_libraries(Main PRIVATE ${SFML_LIBRARIES})
+
+    # Copy the OpenAL DLL (if using shared libraries)
+    add_custom_command(
+        TARGET Main
+        COMMENT "Copy OpenAL DLL"
+        PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:Main>
+        VERBATIM
+    )
+
 else()
     message(FATAL_ERROR "Unsupported platform")
 endif()

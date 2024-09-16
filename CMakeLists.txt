@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Set the paths for your project
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
-set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include/headers")
+set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
 set(TEST_DIR "${CMAKE_SOURCE_DIR}/testing")
 include_directories(${INCLUDE_DIR})

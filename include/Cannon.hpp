@@ -9,6 +9,7 @@ public:
     void render() override;
     void setRotation(float rotation);
     float getRotation() const;
+    void updateRotation();
 
 private:
     float rotation;

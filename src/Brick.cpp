@@ -8,3 +8,11 @@ Brick::Brick(int x, int y, int width, int height, const string& imagePath, int h
 void Brick::render(sf::RenderWindow& window) {
     window.draw(sprite);
 }
+
+int Brick::getHealth() const {
+    return health;
+}
+
+sf::FloatRect Brick::getBounds() const {
+    return sprite.getGlobalBounds();
+}

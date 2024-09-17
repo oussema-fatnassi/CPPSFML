@@ -8,6 +8,7 @@ public:
     Brick(int x, int y, int width, int height, const string& imagePath, int health);
     void render(sf::RenderWindow& window) override;
     int getHealth() const;
+    sf::FloatRect getBounds() const;
 
 private:
     int health;

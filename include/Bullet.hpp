@@ -2,6 +2,7 @@
 #define BULLET_HPP
 
 #include "GameObject.hpp"
+#include <cmath>
 
 class Bullet : public GameObject {
 public:

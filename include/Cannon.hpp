@@ -2,6 +2,10 @@
 #define CANNON_HPP
 
 #include "GameObject.hpp"
+#include "InputManager.hpp"
+#include "Bullet.hpp"
+#include "MathHelper.hpp"
+#include <cmath>
 
 class Cannon : public GameObject {
 public:

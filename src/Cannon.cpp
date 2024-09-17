@@ -39,7 +39,7 @@ float Cannon::getRotation() const {
     return rotation;
 }
 
-void Cannon::drawTrajectory(sf::RenderWindow& window) {
+sf::VertexArray Cannon::drawTrajectory(sf::RenderWindow& window) {
 sf::Vector2f cannonPos = sprite.getPosition();
     float angle = getRotation();
 
@@ -58,7 +58,9 @@ sf::Vector2f cannonPos = sprite.getPosition();
     sf::VertexArray trajectoryLine(sf::LinesStrip);
     trajectoryLine.append(sf::Vertex(startPoint, sf::Color::Red));
 
-    while (currentPoint.y < windowSize.y) {
+    int maxReflections = 5;
+
+    while (currentPoint.y < windowSize.y && maxReflections > 0) {
         sf::Vector2f nextPoint = currentPoint;
         float t_min = calculateLineEnd(nextPoint, currentDirection, windowSize);
 
@@ -74,10 +76,13 @@ sf::Vector2f cannonPos = sprite.getPosition();
 
         // Append the new point to the trajectory
         trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
+
+        maxReflections--;
     }
 
     // Draw the trajectory line
     window.draw(trajectoryLine);
+    return trajectoryLine;
 }
 
 float Cannon::calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize) {

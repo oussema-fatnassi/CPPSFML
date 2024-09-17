@@ -63,37 +63,106 @@ float Cannon::getRotation() const {
     return rotation;
 }
 
+// Helper function to calculate intersection and normal
+bool intersects(const sf::Vector2f& start1, const sf::Vector2f& end1,
+                const sf::Vector2f& start2, const sf::Vector2f& end2,
+                sf::Vector2f& normal) {
+    sf::Vector2f dir1 = end1 - start1;
+    sf::Vector2f dir2 = end2 - start2;
+    sf::Vector2f diff = start1 - start2;
+
+    float det = dir1.x * dir2.y - dir1.y * dir2.x;
+    if (det == 0) return false; // Parallel lines
+
+    float t = (diff.x * dir2.y - diff.y * dir2.x) / det;
+    float u = (diff.x * dir1.y - diff.y * dir1.x) / det;
+
+    if (t >= 0 && t <= 1 && u >= 0) {
+        normal = dir2;
+        normal = sf::Vector2f(-normal.y, normal.x); // Perpendicular vector
+        return true;
+    }
+    return false;
+}
+
+// Helper function to reflect the direction vector off the normal
+sf::Vector2f reflect(const sf::Vector2f& direction, const sf::Vector2f& normal) {
+    float dotProduct = direction.x * normal.x + direction.y * normal.y;
+    return direction - 2 * dotProduct * normal;
+}
+
 void Cannon::drawTrajectory(sf::RenderWindow& window) {
     sf::Vector2f cannonPos = sprite.getPosition();
     float angle = getRotation();
 
     // Convert the angle from degrees to radians
-    float radians = (angle-90.f) * 3.14159265f / 180.0f;
+    float radians = (angle - 90.f) * 3.14159265f / 180.0f;
 
     // Calculate the direction vector based on the cannon's rotation
     sf::Vector2f direction(std::cos(radians), std::sin(radians));
 
-    // Scale the direction to a desired length
-    float lineLength = 2000.f;
-    sf::Vector2f lineEnd = cannonPos + direction * lineLength;
+    // Define window boundaries
+    sf::IntRect viewport = window.getViewport(window.getView());
+    sf::Vector2f topLeft(0, 0);
+    sf::Vector2f bottomRight(600, 900);  // Width x Height of the window
+
+    // Initialize the start and end points of the trajectory
+    sf::Vector2f start = cannonPos;
+    sf::Vector2f end = start + direction * 2000.f;
+
+    // Line parameters
+    sf::Vector2f normal;
+    bool hit = false;
+
+    // Check for intersection with window borders
+    while (end.y >= 0) {
+        // Check intersections with window borders
+        sf::Vector2f borderStart, borderEnd;
+
+        // Top border
+        borderStart = topLeft;
+        borderEnd = sf::Vector2f(bottomRight.x, topLeft.y);
+        if (intersects(start, end, borderStart, borderEnd, normal)) {
+            hit = true;
+        }
+
+        // Left border
+        if (!hit) {
+            borderStart = topLeft;
+            borderEnd = sf::Vector2f(topLeft.x, bottomRight.y);
+            if (intersects(start, end, borderStart, borderEnd, normal)) {
+                hit = true;
+            }
+        }
+
+        // Right border
+        if (!hit) {
+            borderStart = sf::Vector2f(bottomRight.x, topLeft.y);
+            borderEnd = bottomRight;
+            if (intersects(start, end, borderStart, borderEnd, normal)) {
+                hit = true;
+            }
+        }
+
+        if (hit) {
+            // Reflect the direction vector
+            direction = reflect(direction, normal);
+            // Update the end point
+            end = start + direction * 2000.f;
+            // Reset the hit flag
+            hit = false;
+        } else {
+            // No intersection, break the loop
+            break;
+        }
+    }
 
     // Draw the trajectory line
     sf::VertexArray trajectoryLine(sf::Lines, 2);
-    trajectoryLine[0].position = cannonPos;
+    trajectoryLine[0].position = start;
     trajectoryLine[0].color = sf::Color::Red;
-    trajectoryLine[1].position = lineEnd;
+    trajectoryLine[1].position = end;
     trajectoryLine[1].color = sf::Color::Red;
     window.draw(trajectoryLine);
 }
 
-
-// void Cannon::shoot() {
-//     sf::Vector2f cannonPos = sprite.getPosition();
-//     float angle = getRotation();
-
-//     float x = cannonPos.x + 50 * cos(angle * 3.14159265 / 180);
-//     float y = cannonPos.y + 50 * sin(angle * 3.14159265 / 180);
-
-//     Bullet* bullet = new Bullet(window, x, y, 10, 10, "assets/bullet.png", angle, 5.0f, 1);
-//     AssetManager::getInstance().addBullet(bullet);
-// }

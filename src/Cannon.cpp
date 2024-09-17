@@ -44,37 +44,43 @@ float Cannon::getRotation() const {
 }
 
 void Cannon::drawTrajectory(sf::RenderWindow& window) {
-    sf::Vector2f cannonPos = sprite.getPosition();
+sf::Vector2f cannonPos = sprite.getPosition();
     float angle = getRotation();
 
     // Convert the angle from degrees to radians
     float radians = (angle - 90.f) * 3.14159265f / 180.0f;
 
-    // Calculate the direction vector based on the cannon's rotation
+    // Calculate the initial direction vector based on the cannon's rotation
     sf::Vector2f direction(std::cos(radians), std::sin(radians));
     sf::Vector2u windowSize = window.getSize();
 
-    // Calculate the end point of the trajectory line
-    sf::Vector2f lineEnd = cannonPos;
-    float t_min = calculateLineEnd(lineEnd, direction, windowSize);
+    // Start the trajectory from the cannon position
+    sf::Vector2f startPoint = cannonPos;
+    sf::Vector2f currentDirection = direction;
+    sf::Vector2f currentPoint = startPoint;
 
-    // Calculate the length of the line
-    float lineLength = MathHelper::magnitude(lineEnd - cannonPos);
-    std::cout << "Trajectory Line Length: " << lineLength << std::endl;
+    sf::VertexArray trajectoryLine(sf::LinesStrip);
+    trajectoryLine.append(sf::Vertex(startPoint, sf::Color::Red));
 
-    // Determine which border was hit
-    sf::Vector2f normal = determineBorderNormal(lineEnd, windowSize);
+    while (currentPoint.y < windowSize.y) {
+        sf::Vector2f nextPoint = currentPoint;
+        float t_min = calculateLineEnd(nextPoint, currentDirection, windowSize);
 
-    // Calculate the collision angle
-    float collisionAngle = MathHelper::calculateCollisionAngle(direction, normal);
-    std::cout << "Collision Angle: " << collisionAngle << " degrees" << std::endl;
+        // Break if no intersection found
+        if (t_min <= 0) break;
+
+        // Calculate the reflection
+        sf::Vector2f normal = determineBorderNormal(nextPoint, windowSize);
+        currentDirection = reflectDirection(currentDirection, normal);
+
+        // Update the current point
+        currentPoint = nextPoint;
+
+        // Append the new point to the trajectory
+        trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
+    }
 
     // Draw the trajectory line
-    sf::VertexArray trajectoryLine(sf::Lines, 2);
-    trajectoryLine[0].position = cannonPos;
-    trajectoryLine[0].color = sf::Color::Red;
-    trajectoryLine[1].position = lineEnd;
-    trajectoryLine[1].color = sf::Color::Red;
     window.draw(trajectoryLine);
 }
 
@@ -112,4 +118,10 @@ sf::Vector2f Cannon::determineBorderNormal(const sf::Vector2f& lineEnd, const sf
     }
     // Default value if no border hit, should not occur
     return sf::Vector2f(0, 0);
+}
+
+sf::Vector2f Cannon::reflectDirection(const sf::Vector2f& direction, const sf::Vector2f& normal) {
+    // Reflect the direction vector around the normal
+    float dotProduct = MathHelper::dotProduct(direction, normal);
+    return direction - 2 * dotProduct * normal;
 }

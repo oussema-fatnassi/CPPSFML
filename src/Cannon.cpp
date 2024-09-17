@@ -63,34 +63,6 @@ float Cannon::getRotation() const {
     return rotation;
 }
 
-// Helper function to calculate intersection and normal
-bool intersects(const sf::Vector2f& start1, const sf::Vector2f& end1,
-                const sf::Vector2f& start2, const sf::Vector2f& end2,
-                sf::Vector2f& normal) {
-    sf::Vector2f dir1 = end1 - start1;
-    sf::Vector2f dir2 = end2 - start2;
-    sf::Vector2f diff = start1 - start2;
-
-    float det = dir1.x * dir2.y - dir1.y * dir2.x;
-    if (det == 0) return false; // Parallel lines
-
-    float t = (diff.x * dir2.y - diff.y * dir2.x) / det;
-    float u = (diff.x * dir1.y - diff.y * dir1.x) / det;
-
-    if (t >= 0 && t <= 1 && u >= 0) {
-        normal = dir2;
-        normal = sf::Vector2f(-normal.y, normal.x); // Perpendicular vector
-        return true;
-    }
-    return false;
-}
-
-// Helper function to reflect the direction vector off the normal
-sf::Vector2f reflect(const sf::Vector2f& direction, const sf::Vector2f& normal) {
-    float dotProduct = direction.x * normal.x + direction.y * normal.y;
-    return direction - 2 * dotProduct * normal;
-}
-
 void Cannon::drawTrajectory(sf::RenderWindow& window) {
     sf::Vector2f cannonPos = sprite.getPosition();
     float angle = getRotation();
@@ -101,68 +73,50 @@ void Cannon::drawTrajectory(sf::RenderWindow& window) {
     // Calculate the direction vector based on the cannon's rotation
     sf::Vector2f direction(std::cos(radians), std::sin(radians));
 
-    // Define window boundaries
-    sf::IntRect viewport = window.getViewport(window.getView());
-    sf::Vector2f topLeft(0, 0);
-    sf::Vector2f bottomRight(600, 900);  // Width x Height of the window
+    // Get the window size
+    sf::Vector2u windowSize = window.getSize();
 
-    // Initialize the start and end points of the trajectory
-    sf::Vector2f start = cannonPos;
-    sf::Vector2f end = start + direction * 2000.f;
+    // Variables to store the intersection point with the window borders
+    sf::Vector2f lineEnd = cannonPos;
 
-    // Line parameters
-    sf::Vector2f normal;
-    bool hit = false;
+    // Calculate the distance to each window border
+    float t_max_x, t_max_y;
 
-    // Check for intersection with window borders
-    while (end.y >= 0) {
-        // Check intersections with window borders
-        sf::Vector2f borderStart, borderEnd;
-
-        // Top border
-        borderStart = topLeft;
-        borderEnd = sf::Vector2f(bottomRight.x, topLeft.y);
-        if (intersects(start, end, borderStart, borderEnd, normal)) {
-            hit = true;
-        }
-
-        // Left border
-        if (!hit) {
-            borderStart = topLeft;
-            borderEnd = sf::Vector2f(topLeft.x, bottomRight.y);
-            if (intersects(start, end, borderStart, borderEnd, normal)) {
-                hit = true;
-            }
-        }
-
-        // Right border
-        if (!hit) {
-            borderStart = sf::Vector2f(bottomRight.x, topLeft.y);
-            borderEnd = bottomRight;
-            if (intersects(start, end, borderStart, borderEnd, normal)) {
-                hit = true;
-            }
-        }
-
-        if (hit) {
-            // Reflect the direction vector
-            direction = reflect(direction, normal);
-            // Update the end point
-            end = start + direction * 2000.f;
-            // Reset the hit flag
-            hit = false;
-        } else {
-            // No intersection, break the loop
-            break;
-        }
+    if (direction.x != 0) {
+        if (direction.x > 0)
+            t_max_x = (windowSize.x - cannonPos.x) / direction.x;
+        else
+            t_max_x = (-cannonPos.x) / direction.x;
+    } else {
+        t_max_x = std::numeric_limits<float>::max(); // No movement in x direction
     }
+
+    if (direction.y != 0) {
+        if (direction.y > 0)
+            t_max_y = (windowSize.y - cannonPos.y) / direction.y;
+        else
+            t_max_y = (-cannonPos.y) / direction.y;
+    } else {
+        t_max_y = std::numeric_limits<float>::max(); // No movement in y direction
+    }
+
+    // Use the smaller t_max value to find the intersection point
+    float t_min = std::min(t_max_x, t_max_y);
+    lineEnd = cannonPos + direction * t_min;
+
+    // Calculate the length of the line
+    float lineLength = std::sqrt(std::pow(lineEnd.x - cannonPos.x, 2) + std::pow(lineEnd.y - cannonPos.y, 2));
+
+    // Print the length of the line
+    std::cout << "Trajectory Line Length: " << lineLength << std::endl;
 
     // Draw the trajectory line
     sf::VertexArray trajectoryLine(sf::Lines, 2);
-    trajectoryLine[0].position = start;
+    trajectoryLine[0].position = cannonPos;
     trajectoryLine[0].color = sf::Color::Red;
-    trajectoryLine[1].position = end;
+    trajectoryLine[1].position = lineEnd;
     trajectoryLine[1].color = sf::Color::Red;
     window.draw(trajectoryLine);
+
 }
 

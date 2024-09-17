@@ -1,5 +1,4 @@
 #include "Window.hpp"
-#include <iostream>
 
 Window::Window(const std::string& title, int width, int height)                     // Constructor
     : title(title), width(width), height(height), closed(false) {

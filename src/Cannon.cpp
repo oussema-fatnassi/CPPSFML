@@ -1,8 +1,4 @@
 #include "Cannon.hpp"
-#include "InputManager.hpp"
-#include <cmath>
-#include "Bullet.hpp"
-#include "MathHelper.hpp"
 
 Cannon::Cannon(int x, int y, int width, int height, const string& imagePath)
     : GameObject(x, y, width, height, imagePath) {

@@ -5,11 +5,11 @@
 
 class Cannon : public GameObject {
 public:
-    Cannon(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath);
-    void render() override;
+    Cannon(int x, int y, int width, int height, const string& imagePath);
+    void render(sf::RenderWindow& window) override;
     void setRotation(float rotation);
     float getRotation() const;
-    void updateRotation();
+    void updateRotation(sf::RenderWindow& window);
     void shoot();
 
 private:

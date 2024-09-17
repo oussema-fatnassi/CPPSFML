@@ -6,11 +6,11 @@
 #include "AssetManager.hpp"
 using namespace std;
 
-class GameObject {  // GameObject class used for creating game objects (tiles, images)        
+class GameObject {  
 public:
     virtual ~GameObject() = default;                                                              // Destructor    
-    virtual void render() = 0;
-    void loadTexture(const string& imagePath);                             // Public methods
+    virtual void render(sf::RenderWindow& window) = 0;  // Pass window as a parameter in render
+    void loadTexture(const string& imagePath);                             
 
     int getX() const;                                                           // Getters
     int getY() const;
@@ -20,14 +20,14 @@ public:
     void setTexture(const string& imagePath);                              // Setters     
 
 protected:
-    GameObject(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath);  // Constructor
+    GameObject(int x, int y, int width, int height, const string& imagePath);  // Constructor
+
     int x;                                                                      // Member variables
     int y;
     int width;
     int height;
     sf::Texture* texture;
     sf::Sprite sprite;
-    sf::RenderWindow& window; 
 };
 
 #endif  // GAMEOBJECT_HPP

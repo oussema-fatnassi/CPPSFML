@@ -1,6 +1,7 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath) : window(window), x(x), y(y), width(width), height(height) {
+GameObject::GameObject(int x, int y, int width, int height, const string& imagePath) 
+    : x(x), y(y), width(width), height(height) {
     loadTexture(imagePath);
     sprite.setTexture(*texture);
     sprite.setPosition(x, y);
@@ -36,6 +37,6 @@ int GameObject::getHeight() const {
     return height;
 }
 
-void GameObject::render() {
+void GameObject::render(sf::RenderWindow& window) {
     window.draw(sprite);
 }

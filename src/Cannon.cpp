@@ -1,6 +1,7 @@
 #include "Cannon.hpp"
 #include "InputManager.hpp"
 #include <cmath>
+#include "Bullet.hpp"
 
 float getAngle(float x1, float y1, float x2, float y2) {
     sf::Vector2f up(0, 1);
@@ -23,10 +24,10 @@ float getAngle(float x1, float y1, float x2, float y2) {
         return -angle;
 }
 
-Cannon::Cannon(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath, float rotation)
-    : GameObject(window, x, y, width, height, imagePath), rotation(rotation) {
+Cannon::Cannon(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath)
+    : GameObject(window, x, y, width, height, imagePath) {
     loadTexture(imagePath);
-    sprite.setOrigin(width / 2.f, height /1.23f); // set the origin to the middle point of the top border
+    sprite.setOrigin(width / 2.f, height /1.23f); 
     sprite.setRotation(rotation);
 }
 
@@ -38,12 +39,20 @@ void Cannon::updateRotation() {
     sf::Vector2i mousePos = InputManager::getInstance().getMousePosition(window);
     sf::Vector2f cannonPos = sprite.getPosition();
 
-    float angle = getAngle(cannonPos.x, cannonPos.y, mousePos.x, mousePos.y);
+    // Check if the mouse is above the cannon
+    if (mousePos.y < cannonPos.y) {
+        // Mouse is above the cannon, calculate the rotation angle
+        float angle = getAngle(cannonPos.x, cannonPos.y, mousePos.x, mousePos.y);
 
-    angle += 180.0f;
+        // Adjust the angle for the initial orientation of the cannon
+        angle += 180.0f;
 
-    setRotation(angle);
+        // Set the new rotation
+        setRotation(angle);
+    }
+    // If the mouse is below the cannon, do nothing (rotation remains unchanged)
 }
+
 
 void Cannon::setRotation(float rotation) {
     this->rotation = rotation;
@@ -53,3 +62,15 @@ void Cannon::setRotation(float rotation) {
 float Cannon::getRotation() const {
     return rotation;
 }
+
+
+// void Cannon::shoot() {
+//     sf::Vector2f cannonPos = sprite.getPosition();
+//     float angle = getRotation();
+
+//     float x = cannonPos.x + 50 * cos(angle * 3.14159265 / 180);
+//     float y = cannonPos.y + 50 * sin(angle * 3.14159265 / 180);
+
+//     Bullet* bullet = new Bullet(window, x, y, 10, 10, "assets/bullet.png", angle, 5.0f, 1);
+//     AssetManager::getInstance().addBullet(bullet);
+// }

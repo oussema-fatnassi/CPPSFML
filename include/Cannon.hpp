@@ -15,6 +15,9 @@ public:
 
 private:
     float rotation;
+    float calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize);
+    sf::Vector2f determineBorderNormal(const sf::Vector2f& lineEnd, const sf::Vector2u& windowSize);
+
 };
 
 #endif // CANNON_HPP

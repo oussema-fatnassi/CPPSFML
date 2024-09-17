@@ -5,9 +5,9 @@
 
 class Bullet : public GameObject {
 public:
-    Bullet(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath, float rotation, float speed, int damage);
+    Bullet(int x, int y, int width, int height, const string& imagePath, float rotation, float speed, int damage);
     void update();
-    void render() override;
+    void render(sf::RenderWindow& window) override;
 
     int getDamage() const;
     float getSpeed() const;

@@ -5,8 +5,8 @@
 
 class Brick : public GameObject {
 public:
-    Brick(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath, int health);
-    void render() override;
+    Brick(int x, int y, int width, int height, const string& imagePath, int health);
+    void render(sf::RenderWindow& window) override;
     int getHealth() const;
 
 private:

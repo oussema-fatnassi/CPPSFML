@@ -24,18 +24,18 @@ float getAngle(float x1, float y1, float x2, float y2) {
         return -angle;
 }
 
-Cannon::Cannon(sf::RenderWindow& window, int x, int y, int width, int height, const string& imagePath)
-    : GameObject(window, x, y, width, height, imagePath) {
+Cannon::Cannon(int x, int y, int width, int height, const string& imagePath)
+    : GameObject(x, y, width, height, imagePath) {
     loadTexture(imagePath);
     sprite.setOrigin(width / 2.f, height /1.23f); 
     sprite.setRotation(rotation);
 }
 
-void Cannon::render() {
+void Cannon::render(sf::RenderWindow& window) {
     window.draw(sprite);
 }
 
-void Cannon::updateRotation() {
+void Cannon::updateRotation(sf::RenderWindow& window) {
     sf::Vector2i mousePos = InputManager::getInstance().getMousePosition(window);
     sf::Vector2f cannonPos = sprite.getPosition();
 

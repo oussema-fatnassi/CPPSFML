@@ -11,15 +11,15 @@ int main() {
     bool quit = false;
     sf::Event event;
 
-    Brick brick = Brick(window, 100, 100, 100, 100, "../assets/images/brick.png", 100);         // Create a brick object
-    Cannon cannon = Cannon(window, 300, 800, 100, 200, "../assets/images/cannon.png");       // Create a cannon object
+    Brick brick = Brick( 100, 100, 100, 100, "../assets/images/brick.png", 100);         // Create a brick object
+    Cannon cannon = Cannon( 300, 800, 100, 200, "../assets/images/cannon.png");       // Create a cannon object
 
 
     while (window.isOpen()) {                                                           // Main game loop
         window.clear(sf::Color(251, 248, 239, 255));                                    // Clear the window     
-        brick.render();                                                                 // Render the brick object
-        cannon.render();                                                                // Render the cannon object
-        cannon.updateRotation();                                                  // Update the cannon rotation
+        brick.render(window);                                                                 // Render the brick object
+        cannon.render(window);                                                                // Render the cannon object
+        cannon.updateRotation(window);                                                  // Update the cannon rotation
 
         window.display();                                                               // Display the window
 

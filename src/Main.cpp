@@ -12,7 +12,7 @@ int main() {
     sf::Event event;
 
     Brick brick = Brick(window, 100, 100, 100, 100, "../assets/images/brick.png", 100);         // Create a brick object
-    Cannon cannon = Cannon(window, 300, 800, 100, 200, "../assets/images/cannon.png", 180);       // Create a cannon object
+    Cannon cannon = Cannon(window, 300, 800, 100, 200, "../assets/images/cannon.png");       // Create a cannon object
 
 
     while (window.isOpen()) {                                                           // Main game loop

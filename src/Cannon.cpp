@@ -63,6 +63,29 @@ float Cannon::getRotation() const {
     return rotation;
 }
 
+void Cannon::drawTrajectory(sf::RenderWindow& window) {
+    sf::Vector2f cannonPos = sprite.getPosition();
+    float angle = getRotation();
+
+    // Convert the angle from degrees to radians
+    float radians = (angle-90.f) * 3.14159265f / 180.0f;
+
+    // Calculate the direction vector based on the cannon's rotation
+    sf::Vector2f direction(std::cos(radians), std::sin(radians));
+
+    // Scale the direction to a desired length
+    float lineLength = 2000.f;
+    sf::Vector2f lineEnd = cannonPos + direction * lineLength;
+
+    // Draw the trajectory line
+    sf::VertexArray trajectoryLine(sf::Lines, 2);
+    trajectoryLine[0].position = cannonPos;
+    trajectoryLine[0].color = sf::Color::Red;
+    trajectoryLine[1].position = lineEnd;
+    trajectoryLine[1].color = sf::Color::Red;
+    window.draw(trajectoryLine);
+}
+
 
 // void Cannon::shoot() {
 //     sf::Vector2f cannonPos = sprite.getPosition();

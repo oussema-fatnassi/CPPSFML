@@ -11,6 +11,7 @@ public:
     float getRotation() const;
     void updateRotation(sf::RenderWindow& window);
     void shoot();
+    void drawTrajectory(sf::RenderWindow& window);
 
 private:
     float rotation;

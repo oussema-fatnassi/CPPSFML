@@ -20,6 +20,7 @@ int main() {
         brick.render(window);                                                                 // Render the brick object
         cannon.render(window);                                                                // Render the cannon object
         cannon.updateRotation(window);                                                  // Update the cannon rotation
+        cannon.drawTrajectory(window);                                                   // Draw the trajectory of the cannon
 
         window.display();                                                               // Display the window
 

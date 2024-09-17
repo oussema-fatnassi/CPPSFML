@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
+#include "Brick.hpp"
+#include "Cannon.hpp"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(600, 900), "Breakout");                      // Create a window with SFML
@@ -9,9 +11,15 @@ int main() {
     bool quit = false;
     sf::Event event;
 
+    Brick brick = Brick(window, 100, 100, 100, 100, "../assets/images/brick.png", 100);         // Create a brick object
+    Cannon cannon = Cannon(window, 300, 800, 100, 200, "../assets/images/cannon.png", 180);       // Create a cannon object
+
 
     while (window.isOpen()) {                                                           // Main game loop
         window.clear(sf::Color(251, 248, 239, 255));                                    // Clear the window     
+        brick.render();                                                                 // Render the brick object
+        cannon.render();                                                                // Render the cannon object
+        cannon.updateRotation();                                                  // Update the cannon rotation
 
         window.display();                                                               // Display the window
 

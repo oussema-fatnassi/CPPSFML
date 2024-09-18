@@ -39,16 +39,13 @@ float Cannon::getRotation() const {
     return rotation;
 }
 
-void Cannon::drawTrajectory(sf::RenderWindow& window, const std::vector<Brick>& bricks) {
+void Cannon::drawTrajectory(sf::RenderWindow& window) {
     sf::Vector2f cannonPos = sprite.getPosition();
     float angle = getRotation();
     float radians = (angle - 90.f) * 3.14159265f / 180.0f;
     sf::Vector2f direction(std::cos(radians), std::sin(radians));
-    trajectoryManager.updateTrajectory(cannonPos, direction, window, bricks);
+    trajectoryManager.updateTrajectory(cannonPos, direction, window);
 }
-
-
-
 
 float Cannon::calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize) {
     float t_max_x, t_max_y;

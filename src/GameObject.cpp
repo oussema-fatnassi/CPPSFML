@@ -33,4 +33,6 @@ sf::Vector2f GameObject::getDimension() const {
     return dimension;
 }
 
-
+sf::Sprite GameObject::getSprite() const {
+    return sprite;
+}

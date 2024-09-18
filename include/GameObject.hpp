@@ -14,6 +14,7 @@ public:
 
     sf::Vector2f getPosition() const;                                       // Getters
     sf::Vector2f getDimension() const;
+    sf::Sprite getSprite() const;
 
     void setTexture(const string& imagePath);                              // Setters     
 

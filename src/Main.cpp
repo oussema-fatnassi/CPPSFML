@@ -58,7 +58,7 @@ int main() {
 
         // Update and render bullets
         for (auto& bullet : bullets) {
-            bullet.update();  // Move the bullet
+            bullet.update(cannon.getPosition());  // Pass the cannon's position to the update method
             bullet.render(window);  // Render the bullet
         }
 

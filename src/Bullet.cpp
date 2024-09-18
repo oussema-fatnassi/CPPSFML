@@ -1,7 +1,7 @@
 #include "Bullet.hpp"
 
-Bullet::Bullet(int x, int y, int width, int height, const string& imagePath, float rotation, float speed, int damage) 
-    : GameObject(x, y, width, height, imagePath), rotation(rotation), speed(speed), damage(damage) {
+Bullet::Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage) 
+    : GameObject(position, dimension, imagePath), rotation(rotation), speed(speed), damage(damage) {
     loadTexture(imagePath);
     sprite.setRotation(rotation);
 }

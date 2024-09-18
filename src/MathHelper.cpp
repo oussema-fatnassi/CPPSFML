@@ -41,48 +41,67 @@ float MathHelper::calculateCollisionAngle(const sf::Vector2f& direction, const s
     return std::acos(dot) * 180.0f / 3.14159265f;
 }
 
-bool MathHelper::lineIntersectsRectangle(const sf::Vector2f& lineStart, const sf::Vector2f& lineEnd, const sf::FloatRect& rect) {
-    // Calculate the line vector
-    sf::Vector2f line = lineEnd - lineStart;
+bool MathHelper::lineIntersectsRectangle(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::FloatRect& rect) {
+    // Check if the line from p1 to p2 intersects any side of the rectangle
+    sf::Vector2f topLeft(rect.left, rect.top);
+    sf::Vector2f topRight(rect.left + rect.width, rect.top);
+    sf::Vector2f bottomLeft(rect.left, rect.top + rect.height);
+    sf::Vector2f bottomRight(rect.left + rect.width, rect.top + rect.height);
 
-    // Calculate the rectangle edges
-    sf::Vector2f rectEdges[4] = {
-        sf::Vector2f(1, 0), // Right edge
-        sf::Vector2f(0, 1), // Bottom edge
-        sf::Vector2f(-1, 0), // Left edge
-        sf::Vector2f(0, -1) // Top edge
-    };
+    // Check if the line intersects any of the four sides of the rectangle
+    return MathHelper::lineIntersectsLine(p1, p2, topLeft, topRight) || 
+           MathHelper::lineIntersectsLine(p1, p2, topRight, bottomRight) ||
+           MathHelper::lineIntersectsLine(p1, p2, bottomRight, bottomLeft) ||
+           MathHelper::lineIntersectsLine(p1, p2, bottomLeft, topLeft);
+}
 
-    // Calculate the line's normal vectors
-    sf::Vector2f lineNormals[2] = {
-        sf::Vector2f(-line.y, line.x), // Normal to the line (counter-clockwise)
-        sf::Vector2f(line.y, -line.x) // Normal to the line (clockwise)
-    };
 
-    // Check for separation on all edges and normals
-    for (int i = 0; i < 4; i++) {
-        // Calculate the rectangle's edge vector
-        sf::Vector2f rectEdge = rectEdges[i];
+bool MathHelper::lineIntersectsLine(const sf::Vector2f& a1, const sf::Vector2f& a2, 
+                                    const sf::Vector2f& b1, const sf::Vector2f& b2) {
+    float denominator = (a2.x - a1.x) * (b2.y - b1.y) - (a2.y - a1.y) * (b2.x - b1.x);
+    
+    // If the denominator is 0, the lines are parallel
+    if (denominator == 0.0f) return false;
 
-        // Calculate the rectangle's normal vector
-        sf::Vector2f rectNormal = sf::Vector2f(-rectEdge.y, rectEdge.x);
+    float ua = ((b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x)) / denominator;
+    float ub = ((a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x)) / denominator;
 
-        // Calculate the minimum and maximum projections of the line and rectangle on the normal
-        float lineMin = dotProduct(lineStart, rectNormal);
-        float lineMax = dotProduct(lineEnd, rectNormal);
-        float rectMin = dotProduct(sf::Vector2f(rect.left, rect.top), rectNormal);
-        float rectMax = dotProduct(sf::Vector2f(rect.left + rect.width, rect.top + rect.height), rectNormal);
+    // If both ua and ub are between 0 and 1, the lines intersect
+    return (ua >= 0.0f && ua <= 1.0f && ub >= 0.0f && ub <= 1.0f);
+}
 
-        // Swap the minimum and maximum values if necessary
-        if (lineMin > lineMax) std::swap(lineMin, lineMax);
-        if (rectMin > rectMax) std::swap(rectMin, rectMax);
+sf::Vector2f MathHelper::reflectDirection(const sf::Vector2f& incident, const sf::Vector2f& normal) {
+    return incident - 2.0f * MathHelper::dotProduct(incident, normal) * normal;
+}
 
-        // Check for separation
-        if (lineMax < rectMin || lineMin > rectMax) {
-            return false;
-        }
+
+sf::Vector2f MathHelper::calculateIntersectionPoint(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::FloatRect& rect) {
+    // Find the intersection point of the line from p1 to p2 with the rectangle
+    // This function assumes that an intersection exists
+
+    sf::Vector2f topLeft(rect.left, rect.top);
+    sf::Vector2f topRight(rect.left + rect.width, rect.top);
+    sf::Vector2f bottomLeft(rect.left, rect.top + rect.height);
+    sf::Vector2f bottomRight(rect.left + rect.width, rect.top + rect.height);
+
+    // Check which side of the rectangle the line intersects
+    if (MathHelper::lineIntersectsLine(p1, p2, topLeft, topRight)) {
+        return MathHelper::getLineIntersection(p1, p2, topLeft, topRight);
+    } else if (MathHelper::lineIntersectsLine(p1, p2, topRight, bottomRight)) {
+        return MathHelper::getLineIntersection(p1, p2, topRight, bottomRight);
+    } else if (MathHelper::lineIntersectsLine(p1, p2, bottomRight, bottomLeft)) {
+        return MathHelper::getLineIntersection(p1, p2, bottomRight, bottomLeft);
+    } else {
+        return MathHelper::getLineIntersection(p1, p2, bottomLeft, topLeft);
     }
+}
 
-    // No separation found, the line intersects the rectangle
-    return true;
+sf::Vector2f MathHelper::getLineIntersection(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::Vector2f& q1, const sf::Vector2f& q2) {
+    // Calculate the intersection point of the lines from p1 to p2 and from q1 to q2
+    // This function assumes that an intersection exists
+
+    float denominator = (p2.x - p1.x) * (q2.y - q1.y) - (p2.y - p1.y) * (q2.x - q1.x);
+    float t = ((p1.y - q1.y) * (q2.x - q1.x) - (p1.x - q1.x) * (q2.y - q1.y)) / denominator;
+
+    return p1 + t * (p2 - p1);
 }

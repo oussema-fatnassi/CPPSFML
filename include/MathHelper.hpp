@@ -18,8 +18,16 @@ public:
     // Calculates the collision angle between a direction vector and a surface normal
     static float calculateCollisionAngle(const sf::Vector2f& direction, const sf::Vector2f& normal);
 
-    bool lineIntersectsRectangle(const sf::Vector2f& lineStart, const sf::Vector2f& lineEnd, const sf::FloatRect& rect);
+    static bool lineIntersectsRectangle(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::FloatRect& rect);
 
+    static bool lineIntersectsLine(const sf::Vector2f& a1, const sf::Vector2f& a2, 
+                                    const sf::Vector2f& b1, const sf::Vector2f& b2);
+
+    static sf::Vector2f reflectDirection(const sf::Vector2f& incident, const sf::Vector2f& normal);
+
+    static sf::Vector2f calculateIntersectionPoint(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::FloatRect& rect);
+
+    static sf::Vector2f getLineIntersection(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::Vector2f& q1, const sf::Vector2f& q2);
 };
 
 #endif

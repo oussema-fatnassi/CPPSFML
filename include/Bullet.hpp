@@ -2,6 +2,7 @@
 #define BULLET_HPP
 
 #include "GameObject.hpp"
+#include "Brick.hpp"
 #include <cmath>
 
 class Bullet : public GameObject {
@@ -13,6 +14,7 @@ public:
     int getDamage() const;
     float getSpeed() const;
     float getRotation() const;
+    void isColliding(std::vector<Brick>& bricks, sf::RenderWindow& window);
 
 private:
     float rotation;

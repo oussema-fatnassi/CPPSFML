@@ -15,6 +15,7 @@ public:
     float getRotation() const;
     void updateRotation(sf::RenderWindow& window);
     sf::VertexArray drawTrajectory(sf::RenderWindow& window);
+    Bullet shoot();
 
 private:
     float rotation;

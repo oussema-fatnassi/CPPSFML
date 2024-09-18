@@ -1,17 +1,18 @@
-#include "Window.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
-#include "Brick.hpp"
-#include "Cannon.hpp"
-#include "MathHelper.hpp"
+#include <vector>              // Include vector for storing bullets
+#include "MathHelper.hpp"      // Include MathHelper header
+#include "Brick.hpp"           // Include Brick header
+#include "Cannon.hpp"          // Include Cannon header
+#include "Bullet.hpp"          // Include Bullet header
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(600, 900), "Breakout"); // Create a window with SFML
 
     bool quit = false;
     sf::Event event;
-    MathHelper mathHelper;
+    MathHelper mathHelper;  // Corrected declaration of MathHelper
 
     Brick brick = Brick(sf::Vector2f(100, 100), sf::Vector2f(50, 50), "../assets/images/Diamond.png", 100); // Create a brick object
     Brick brick1 = Brick(sf::Vector2f(150, 100), sf::Vector2f(50, 50), "../assets/images/Obsidian.png", 100); // Create a brick object
@@ -30,23 +31,26 @@ int main() {
         window.clear(sf::Color(251, 248, 239, 255)); // Clear the window
 
         // Render the objects
-       for (auto& brick : bricks) {
+        for (auto& brick : bricks) {
             brick.render(window);
         }
         cannon.render(window);
-        // Draw the trajectory line and get the vertex array
-        cannon.drawTrajectory(window);
-
 
         // Update the cannon rotation
         cannon.updateRotation(window);
 
         window.display(); // Display the window
 
-        while (window.pollEvent(event)) { // Poll events from the window to handle input
-            if (event.type == sf::Event::Closed) { // Close the window if the close button is clicked
+        // Event handling
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
                 window.close();
                 quit = true;
+            }
+
+            // Handle right-click to shoot
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
+                bullets.push_back(cannon.shoot());  // Add a new bullet when right-clicked
             }
         }
     }

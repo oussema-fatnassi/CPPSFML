@@ -5,7 +5,10 @@
 #include "InputManager.hpp"
 #include "Bullet.hpp"
 #include "MathHelper.hpp"
+#include "Brick.hpp"
 #include <cmath>
+#include <vector>
+using namespace std;
 
 class Cannon : public GameObject {
 public:
@@ -14,7 +17,7 @@ public:
     void setRotation(float rotation);
     float getRotation() const;
     void updateRotation(sf::RenderWindow& window);
-    sf::VertexArray drawTrajectory(sf::RenderWindow& window);
+    sf::VertexArray drawTrajectory(sf::RenderWindow& window, vector<Brick>& brick);
 
 private:
     float rotation;

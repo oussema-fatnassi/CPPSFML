@@ -23,33 +23,14 @@ int main() {
     while (window.isOpen()) { // Main game loop
         window.clear(sf::Color(251, 248, 239, 255)); // Clear the window
 
-        // Draw the trajectory line and get the vertex array
-        sf::VertexArray trajectoryLine = cannon.drawTrajectory(window);
-
-        // Iterate through all the bricks
-        for (auto& brick : bricks) {
-            // Check if the brick intersects with any of the lines in the trajectory line vertex array
-            for (size_t i = 0; i < trajectoryLine.getVertexCount() - 1; i++) {
-                sf::Vector2f lineStart = trajectoryLine[i].position;
-                sf::Vector2f lineEnd = trajectoryLine[i + 1].position;
-
-                if (mathHelper.lineIntersectsRectangle(lineStart, lineEnd, brick.getBounds())) {
-                    // Collision detected, handle it here
-                    // ...
-                    std::cout << "Collision detected!" << std::endl;
-                    cout << "Brick position: " << brick.getBounds().left << ", " << brick.getBounds().top << endl;
-
-                    // Break the inner loop if a collision is detected
-                    break;
-                }
-            }
-        }
-
         // Render the objects
        for (auto& brick : bricks) {
             brick.render(window);
         }
         cannon.render(window);
+        // Draw the trajectory line and get the vertex array
+        sf::VertexArray trajectoryLine = cannon.drawTrajectory(window, bricks);
+
 
         // Update the cannon rotation
         cannon.updateRotation(window);

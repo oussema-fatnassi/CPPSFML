@@ -12,9 +12,8 @@ class TrajectoryManager : public TrajectoryObserver {
 public:
     TrajectoryManager();
 
-    void updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window, const std::vector<Brick>& bricks);
+    void updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window);
 
-    virtual void onBrickCollision(sf::Vector2f& trajectoryPoint, sf::Vector2f& direction, const Brick& brick) override;
     virtual void onBorderCollision(sf::Vector2f& trajectoryPoint, sf::Vector2f& direction, const sf::Vector2u& windowSize) override;
 
 private:

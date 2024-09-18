@@ -5,7 +5,6 @@
 #include "InputManager.hpp"
 #include "Bullet.hpp"
 #include "MathHelper.hpp"
-#include "Brick.hpp"
 #include <cmath>
 #include <vector>
 #include "TrajectoryManager.hpp"
@@ -18,7 +17,7 @@ public:
     void setRotation(float rotation);
     float getRotation() const;
     void updateRotation(sf::RenderWindow& window);
-    void drawTrajectory(sf::RenderWindow& window, const std::vector<Brick>& bricks);
+    void drawTrajectory(sf::RenderWindow& window);
 
 
 private:

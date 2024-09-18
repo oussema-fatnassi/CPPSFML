@@ -16,7 +16,7 @@ int main() {
     Brick brick = Brick(100, 100, 100, 100, "../assets/images/brick.png", 100); // Create a brick object
     Brick brick2 = Brick(200, 200, 100, 100, "../assets/images/brick.png", 100); // Create a brick object
 
-    std::vector<Brick> bricks = {};
+    std::vector<Brick> bricks = {brick};
 
     Cannon cannon = Cannon(300, 800, 100, 200, "../assets/images/cannon.png"); // Create a cannon object
 
@@ -29,7 +29,7 @@ int main() {
         }
         cannon.render(window);
         // Draw the trajectory line and get the vertex array
-        cannon.drawTrajectory(window, bricks);
+        cannon.drawTrajectory(window);
 
 
         // Update the cannon rotation

@@ -1,11 +1,10 @@
 #include "TrajectoryManager.hpp"
-#include "Brick.hpp"
 #include <cmath>
 #include <limits>
 
 TrajectoryManager::TrajectoryManager() {}
 
-void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window, const std::vector<Brick>& bricks) {
+void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window) {
     sf::Vector2f currentPoint = startPoint;
     sf::VertexArray trajectoryLine(sf::LinesStrip);
     trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
@@ -26,27 +25,9 @@ void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f d
             }
         }
 
-        bool brickCollision = false;
-        float minDistance = std::numeric_limits<float>::max();
-        const Brick* collidedBrick = nullptr;
-        for (const auto& brick : bricks) {
-            if (MathHelper::lineIntersectsRectangle(currentPoint, nextPoint, brick.getBounds())) {
-                sf::Vector2f intersectionPoint = MathHelper::calculateIntersectionPoint(currentPoint, nextPoint, brick.getBounds());
-                float distance = MathHelper::magnitude(intersectionPoint - currentPoint);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    nextPoint = intersectionPoint;
-                    collidedBrick = &brick;
-                    brickCollision = true;
-                }
-            }
-        }
+        // Ignore brick collisions
 
-        if (brickCollision) {
-            onBrickCollision(nextPoint, direction, *collidedBrick);
-        } else {
-            onBorderCollision(nextPoint, direction, windowSize);
-        }
+        onBorderCollision(nextPoint, direction, windowSize);
 
         currentPoint = nextPoint;
         trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
@@ -56,19 +37,6 @@ void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f d
     drawTrajectory(window, trajectoryLine);
 }
 
-void TrajectoryManager::onBrickCollision(sf::Vector2f& trajectoryPoint, sf::Vector2f& direction, const Brick& brick) {
-    // Find the collision point on the brick
-    sf::Vector2f collisionPoint = MathHelper::calculateIntersectionPoint(trajectoryPoint, direction, brick.getBounds());
-
-    // Adjust the trajectoryPoint to be exactly on the brick's boundary
-    trajectoryPoint = collisionPoint;
-
-    // Calculate the normal vector of the brick at the collision point
-    sf::Vector2f normal = brick.getNormal(collisionPoint);
-
-    // Reflect the direction vector based on the brick's normal
-    direction = MathHelper::reflectDirection(direction, normal);
-}
 
 void TrajectoryManager::onBorderCollision(sf::Vector2f& trajectoryPoint, sf::Vector2f& direction, const sf::Vector2u& windowSize) {
     sf::Vector2f normal = determineBorderNormal(trajectoryPoint, windowSize);

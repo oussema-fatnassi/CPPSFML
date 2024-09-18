@@ -19,7 +19,7 @@ public:
     void updateRotation(sf::RenderWindow& window);
     void drawTrajectory(sf::RenderWindow& window);
 
-
+    sf::Vector2f getPosition() const;
 private:
     float rotation;
     float calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize);

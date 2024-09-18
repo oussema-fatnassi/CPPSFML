@@ -9,6 +9,7 @@ public:
     void render(sf::RenderWindow& window) override;
     int getHealth() const;
     sf::FloatRect getBounds() const;
+    sf::Vector2f getNormal(const sf::Vector2f& collisionPoint);
 
 private:
     int health;

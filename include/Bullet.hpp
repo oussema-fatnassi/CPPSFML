@@ -2,22 +2,24 @@
 #define BULLET_HPP
 
 #include "GameObject.hpp"
-#include <cmath>
+#include <string>
 
 class Bullet : public GameObject {
 public:
-    Bullet(int x, int y, int width, int height, const string& imagePath, float rotation, float speed, int damage);
-    void update();
+    Bullet(int x, int y, int width, int height, const std::string& imagePath, float rotation, float speed, int damage);
+    ~Bullet(); // Destructor
+
+    void update(const sf::Vector2f& cannonPosition); // Pass the cannon's position to update
     void render(sf::RenderWindow& window) override;
 
-    int getDamage() const;
-    float getSpeed() const;
-    float getRotation() const;
+    bool isActive() const;  // Check if the bullet is still active
+    void deactivate();      // Deactivate the bullet
 
 private:
     float rotation;
     float speed;
     int damage;
+    bool active;  // Flag to track if the bullet is active
 };
 
 #endif // BULLET_HPP

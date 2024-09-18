@@ -126,3 +126,29 @@ sf::Vector2f Cannon::reflectDirection(const sf::Vector2f& direction, const sf::V
     float dotProduct = MathHelper::dotProduct(direction, normal);
     return direction - 2 * dotProduct * normal;
 }
+Bullet Cannon::shoot() {
+    // Set bullet properties: position, rotation, speed, damage
+    int bulletWidth = 10;  // Set appropriate width
+    int bulletHeight = 20; // Set appropriate height
+    float bulletSpeed = 5.0f; // Adjust the speed as needed
+    int bulletDamage = 10; // Set damage amount
+
+    // Get the cannon's current position and rotation
+    sf::Vector2f cannonPosition = sprite.getPosition();
+    float angle = sprite.getRotation();
+
+    // Calculate the direction the bullet should move based on the cannon's rotation
+    float radians = (angle - 90.f) * 3.14159265f / 180.0f; // Convert to radians and adjust angle for SFML
+
+    // Calculate bullet's initial position at the top of the cannon
+    sf::Vector2f bulletPosition = cannonPosition + sf::Vector2f(std::cos(radians) * (sprite.getOrigin().y), 
+                                                                std::sin(radians) * (sprite.getOrigin().y));
+    
+    // Create a bullet with the calculated position and rotation
+    Bullet bullet(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, "../assets/images/brick.png", angle, bulletSpeed, bulletDamage);
+    
+    // Set the correct movement direction for the bullet
+    bullet.update(); // Move the bullet initially so it doesn't spawn inside the cannon
+
+    return bullet;
+}

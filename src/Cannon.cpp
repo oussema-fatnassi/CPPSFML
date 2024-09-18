@@ -1,9 +1,9 @@
 #include "Cannon.hpp"
 
-Cannon::Cannon(int x, int y, int width, int height, const string& imagePath)
-    : GameObject(x, y, width, height, imagePath) {
+Cannon::Cannon(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath)
+    : GameObject(position, dimension, imagePath) {
     loadTexture(imagePath);
-    sprite.setOrigin(width / 2.f, height /1.23f); 
+    sprite.setOrigin(dimension.x / 2.f, dimension.y /1.23f); 
     sprite.setRotation(rotation);
 }
 

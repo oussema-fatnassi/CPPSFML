@@ -13,12 +13,13 @@ int main() {
     sf::Event event;
     MathHelper mathHelper;
 
-    Brick brick = Brick(100, 100, 100, 100, "../assets/images/brick.png", 100); // Create a brick object
-    Brick brick2 = Brick(200, 200, 100, 100, "../assets/images/brick.png", 100); // Create a brick object
+    Brick brick = Brick(sf::Vector2f(100, 100), sf::Vector2f(100, 100), "../assets/images/brick.png", 100); // Create a brick object
+    Brick brick2 = Brick(sf::Vector2f(200, 200), sf::Vector2f(100, 100), "../assets/images/brick.png", 100); // Create a brick object
 
-    std::vector<Brick> bricks = {brick};
 
-    Cannon cannon = Cannon(300, 800, 100, 200, "../assets/images/cannon.png"); // Create a cannon object
+    std::vector<Brick> bricks = {brick, brick2}; // Create a vector of bricks
+
+    Cannon cannon = Cannon(sf::Vector2f (300, 800),sf::Vector2f (100, 200), "../assets/images/cannon.png"); // Create a cannon object
 
     while (window.isOpen()) { // Main game loop
         window.clear(sf::Color(251, 248, 239, 255)); // Clear the window

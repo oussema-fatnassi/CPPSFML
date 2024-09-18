@@ -1,7 +1,7 @@
 #include "Brick.hpp"
 
-Brick::Brick(int x, int y, int width, int height, const string& imagePath, int health) 
-    : GameObject(x, y, width, height, imagePath), health(health) {
+Brick::Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health) 
+    : GameObject(position,dimension, imagePath), health(health) {
     loadTexture(imagePath);
 }
 

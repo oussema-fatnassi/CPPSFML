@@ -39,93 +39,12 @@ float Cannon::getRotation() const {
     return rotation;
 }
 
-sf::VertexArray Cannon::drawTrajectory(sf::RenderWindow& window, std::vector<Brick>& bricks) {
+void Cannon::drawTrajectory(sf::RenderWindow& window, const std::vector<Brick>& bricks) {
     sf::Vector2f cannonPos = sprite.getPosition();
     float angle = getRotation();
-
-    // Convert the angle from degrees to radians
     float radians = (angle - 90.f) * 3.14159265f / 180.0f;
-
-    // Calculate the initial direction vector based on the cannon's rotation
     sf::Vector2f direction(std::cos(radians), std::sin(radians));
-    sf::Vector2u windowSize = window.getSize();
-
-    // Start the trajectory from the cannon position
-    sf::Vector2f startPoint = cannonPos;
-    sf::Vector2f currentDirection = direction;
-    sf::Vector2f currentPoint = startPoint;
-
-    sf::VertexArray trajectoryLine(sf::LinesStrip);
-    trajectoryLine.append(sf::Vertex(startPoint, sf::Color::Red));
-
-    int maxReflections = 5;
-
-    while (maxReflections > 0) {
-        sf::Vector2f nextPoint = currentPoint;
-        float t_min = calculateLineEnd(nextPoint, currentDirection, windowSize);
-
-        // Check if the trajectory intersects the bottom border
-        if (nextPoint.y >= windowSize.y) {
-            // Calculate the intersection point with the bottom border
-            float t_bottom = (windowSize.y - currentPoint.y) / currentDirection.y;
-            if (t_bottom > 0) {
-                nextPoint = currentPoint + t_bottom * currentDirection;
-                // Draw up to the bottom border and stop
-                trajectoryLine.append(sf::Vertex(nextPoint, sf::Color::Red));
-                break; // Exit if it hits the bottom border
-            }
-        }
-
-        // Check for collisions with bricks
-        bool brickCollision = false;
-        Brick* collidedBrick = nullptr;
-        for (auto& brick : bricks) {
-            if (MathHelper::lineIntersectsRectangle(currentPoint, nextPoint, brick.getBounds())) {
-                // Collision detected with a brick
-                brickCollision = true;
-                collidedBrick = &brick;
-
-                // Calculate the intersection point with the external boundaries of the brick
-                nextPoint = MathHelper::calculateIntersectionPoint(currentPoint, nextPoint, brick.getBounds());
-
-                // Calculate the reflection based on the correct side of the brick (external boundaries)
-                sf::Vector2f normal = collidedBrick->getNormal(nextPoint);
-                currentDirection = MathHelper::reflectDirection(currentDirection, normal);
-
-                break;
-            }
-        }
-
-        // If no brick collision, check for collisions with window border
-        if (!brickCollision) {
-            sf::Vector2f normal = determineBorderNormal(nextPoint, windowSize);
-
-            // If it hits the bottom border, draw up to it and stop
-            if (normal == sf::Vector2f(0, -1)) {
-                float t_bottom = (windowSize.y - currentPoint.y) / currentDirection.y;
-                if (t_bottom > 0) {
-                    nextPoint = currentPoint + t_bottom * currentDirection;
-                    trajectoryLine.append(sf::Vertex(nextPoint, sf::Color::Red));
-                    break; // Exit if it hits the bottom border
-                }
-            } else {
-                // Calculate the reflection from the window border
-                currentDirection = MathHelper::reflectDirection(currentDirection, normal);
-            }
-        }
-
-        // Update the current point
-        currentPoint = nextPoint;
-
-        // Append the new point to the trajectory
-        trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
-
-        maxReflections--;
-    }
-
-    // Draw the trajectory line
-    window.draw(trajectoryLine);
-    return trajectoryLine;
+    trajectoryManager.updateTrajectory(cannonPos, direction, window, bricks);
 }
 
 

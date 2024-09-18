@@ -8,6 +8,7 @@
 #include "Brick.hpp"
 #include <cmath>
 #include <vector>
+#include "TrajectoryManager.hpp"
 using namespace std;
 
 class Cannon : public GameObject {
@@ -17,13 +18,15 @@ public:
     void setRotation(float rotation);
     float getRotation() const;
     void updateRotation(sf::RenderWindow& window);
-    sf::VertexArray drawTrajectory(sf::RenderWindow& window, vector<Brick>& brick);
+    void drawTrajectory(sf::RenderWindow& window, const std::vector<Brick>& bricks);
+
 
 private:
     float rotation;
     float calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize);
     sf::Vector2f determineBorderNormal(const sf::Vector2f& lineEnd, const sf::Vector2u& windowSize);
     sf::Vector2f reflectDirection(const sf::Vector2f& direction, const sf::Vector2f& normal);
+    TrajectoryManager trajectoryManager;
 };
 
 #endif // CANNON_HPP

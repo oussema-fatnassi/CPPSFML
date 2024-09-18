@@ -16,7 +16,7 @@ public:
     void updateRotation(sf::RenderWindow& window);
     sf::VertexArray drawTrajectory(sf::RenderWindow& window);
     Bullet shoot();
-
+    sf::Vector2f getPosition() const;
 private:
     float rotation;
     float calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize);

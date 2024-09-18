@@ -17,7 +17,7 @@ sf::FloatRect Brick::getBounds() const {
     return sprite.getGlobalBounds();
 }
 
-sf::Vector2f Brick::getNormal(const sf::Vector2f& collisionPoint) {
+sf::Vector2f Brick::getNormal(const sf::Vector2f& collisionPoint) const {
     sf::FloatRect bounds = getBounds();
 
     // Calculate distances to each side

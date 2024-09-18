@@ -7,7 +7,14 @@ Bullet::Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imag
 }
 
 void Bullet::update() {
-    sprite.move(speed * cos(rotation * 3.14159265 / 180), speed * sin(rotation * 3.14159265 / 180));
+    // Convert the rotation angle from degrees to radians
+    float radians = (rotation - 90.f) * 3.14159265f / 180.0f; // Adjusted to align with cannon's rotation
+    
+    // Calculate the movement direction based on the rotation angle
+    sf::Vector2f direction(std::cos(radians), std::sin(radians));
+
+    // Update the bullet's position by moving it in the direction
+    sprite.move(direction * speed);
 }
 
 void Bullet::render(sf::RenderWindow& window) {

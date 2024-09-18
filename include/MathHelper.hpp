@@ -18,6 +18,7 @@ public:
     // Calculates the collision angle between a direction vector and a surface normal
     static float calculateCollisionAngle(const sf::Vector2f& direction, const sf::Vector2f& normal);
 
+    // Checks if a line intersects a rectangle
     static bool lineIntersectsRectangle(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::FloatRect& rect);
 
     static bool lineIntersectsLine(const sf::Vector2f& a1, const sf::Vector2f& a2, 
@@ -30,4 +31,4 @@ public:
     static sf::Vector2f getLineIntersection(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::Vector2f& q1, const sf::Vector2f& q2);
 };
 
-#endif
+#endif // MATH_HELPER_HPP

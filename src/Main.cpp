@@ -13,11 +13,16 @@ int main() {
     sf::Event event;
     MathHelper mathHelper;
 
-    Brick brick = Brick(sf::Vector2f(100, 100), sf::Vector2f(100, 100), "../assets/images/brick.png", 100); // Create a brick object
-    Brick brick2 = Brick(sf::Vector2f(200, 200), sf::Vector2f(100, 100), "../assets/images/brick.png", 100); // Create a brick object
+    Brick brick = Brick(sf::Vector2f(100, 100), sf::Vector2f(50, 50), "../assets/images/Diamond.png", 100); // Create a brick object
+    Brick brick1 = Brick(sf::Vector2f(150, 100), sf::Vector2f(50, 50), "../assets/images/Obsidian.png", 100); // Create a brick object
+    Brick brick2 = Brick(sf::Vector2f(200, 100), sf::Vector2f(50, 50), "../assets/images/Dirt.png", 100); // Create a brick object
+    Brick brick3 = Brick(sf::Vector2f(250, 100), sf::Vector2f(50, 50), "../assets/images/GoldOre.png", 100); // Create a brick object
+    Brick brick4 = Brick(sf::Vector2f(300, 100), sf::Vector2f(50, 50), "../assets/images/RubyOre.png", 100); // Create a brick object
+    Brick brick5 = Brick(sf::Vector2f(350, 100), sf::Vector2f(50, 50), "../assets/images/Stone.png", 100); // Create a brick object
+    Brick brick6 = Brick(sf::Vector2f(400, 100), sf::Vector2f(50, 50), "../assets/images/TNT.png", 100); // Create a brick object
 
 
-    std::vector<Brick> bricks = {brick, brick2}; // Create a vector of bricks
+    std::vector<Brick> bricks = {brick, brick1, brick2, brick3, brick4, brick5, brick6}; // Create a vector of bricks
 
     Cannon cannon = Cannon(sf::Vector2f (300, 800),sf::Vector2f (100, 200), "../assets/images/cannon.png"); // Create a cannon object
 

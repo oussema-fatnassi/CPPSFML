@@ -59,12 +59,10 @@ void Bullet::update(const sf::Vector2f& cannonPosition, std::vector<Brick>& bric
 }
 
 // Handle collision with bricks
-// Handle collision with bricks
 void Bullet::handleBrickCollision(std::vector<Brick>& bricks) {
-    bool hasCollided = false; // Ensure one collision per frame
+    bool hasCollided = false;
     for (auto it = bricks.begin(); it != bricks.end() && !hasCollided; ) {
         if (sprite.getGlobalBounds().intersects(it->getGlobalBounds())) {
-            // Determine how to reflect the bullet by comparing positions
             sf::FloatRect bulletBounds = sprite.getGlobalBounds();
             sf::FloatRect brickBounds = it->getGlobalBounds();
 
@@ -76,23 +74,29 @@ void Bullet::handleBrickCollision(std::vector<Brick>& bricks) {
             float dx = bulletCenterX - brickCenterX;
             float dy = bulletCenterY - brickCenterY;
 
-            // Check which axis the bullet hit and reflect accordingly
             if (std::abs(dx) > std::abs(dy)) {
-                // Horizontal collision
                 velocity.x = -velocity.x;
             } else {
-                // Vertical collision
                 velocity.y = -velocity.y;
             }
 
-            // Remove the brick and stop checking for further collisions
-            it = bricks.erase(it);
-            hasCollided = true;
+            // Reduce the brick's health by the bullet's damage
+            it->reduceHealth(damage);
+
+            // If the brick is destroyed, remove it
+            if (it->isDestroyed()) {
+                it = bricks.erase(it);
+            } else {
+                ++it;  // Move to the next brick if not destroyed
+            }
+
+            hasCollided = true;  // Only handle one collision per frame
         } else {
             ++it;
         }
     }
 }
+
 
 
 

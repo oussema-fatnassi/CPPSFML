@@ -13,6 +13,14 @@ int Brick::getHealth() const {
     return health;
 }
 
+void Brick::reduceHealth(int damage) {
+    health -= damage;
+}
+
+bool Brick::isDestroyed() const {
+    return health <= 0;
+}
+
 sf::FloatRect Brick::getGlobalBounds() const {
     return sprite.getGlobalBounds();
 }

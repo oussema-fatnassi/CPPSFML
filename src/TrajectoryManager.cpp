@@ -10,7 +10,7 @@ void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f d
     trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
 
     sf::Vector2u windowSize = window.getSize();
-    int maxReflections = 5;
+    int maxReflections = 15;
 
     while (maxReflections > 0) {
         sf::Vector2f nextPoint = currentPoint;

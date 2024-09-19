@@ -34,26 +34,17 @@ void Bullet::update(const sf::Vector2f& cannonPosition) {
     if (topLeft.x <= 0) {
         // Invert the x-direction (horizontal bounce)
         velocity.x = -velocity.x;
-
-        // Correct the bullet's position so it doesn't go outside the left boundary
-        // sprite.setPosition(bulletBounds.width / 2, bulletPos.y);
     }
     // Detect collisions with the window's right boundary
     else if (topRight.x >= windowSize.x) {
         // Invert the x-direction (horizontal bounce)
         velocity.x = -velocity.x;
-
-        // Correct the bullet's position so it doesn't go past the right boundary
-        // sprite.setPosition(windowSize.x - bulletBounds.width / 2, bulletPos.y);
     }
 
     // Detect collisions with the window's top boundary
     if (topLeft.y <= 0) {
         // Invert the y-direction (vertical bounce)
         velocity.y = -velocity.y;
-
-        // Correct the bullet's position so it doesn't go outside the top boundary
-        // sprite.setPosition(bulletPos.x, bulletBounds.height / 2);
     }
 
     // Move the bullet using its velocity vector

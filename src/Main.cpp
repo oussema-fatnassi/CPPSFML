@@ -23,7 +23,7 @@ int main() {
     std::vector<Brick> bricks = {brick, brick1, brick2};
 
     // Create a cannon object
-    Cannon cannon = Cannon(sf::Vector2f (300, 800),sf::Vector2f (100, 200), "../assets/images/cannon.png"); // Create a cannon object
+    Cannon cannon = Cannon(sf::Vector2f (300, 900),sf::Vector2f (100, 200), "../assets/images/cannon.png"); // Create a cannon object
 
     std::vector<Bullet> bullets; // Vector to store bullets
 
@@ -43,12 +43,18 @@ int main() {
         cannon.render(window);
 
         // Update and render bullets
-        for (auto& bullet : bullets) {
-            bullet.update(cannon.getPosition());  // Pass the cannon's position to the update method
-            bullet.render(window);  // Render the bullet
+        for (auto it = bullets.begin(); it != bullets.end(); ) {
+            it->update(cannon.getPosition());  // Update bullet
+            if (!it->isActive()) {             // Check if bullet is inactive
+                it = bullets.erase(it);        // Remove inactive bullet from the vector
+            } else {
+                it->render(window);            // Render active bullet
+                ++it;                          // Move to the next bullet
+            }
         }
 
         window.display();  // Display the window
+        cout << "Number of bullets: " << bullets.size() << endl;  // Print the number of bullets
 
         // Event handling
         while (window.pollEvent(event)) {
@@ -58,7 +64,7 @@ int main() {
             }
 
             // Handle right-click to shoot
-            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right && bullets.size() == 0) {
                 bullets.push_back(cannon.shoot());  // Add a new bullet when right-clicked
             }
         }

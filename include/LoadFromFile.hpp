@@ -11,7 +11,7 @@
 using namespace std;
 
 // Constants
-const int SIZE = 9;
+const int SIZE = 10;
 
 class LoadFromFile {
 public:

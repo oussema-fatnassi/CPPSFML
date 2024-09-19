@@ -59,29 +59,42 @@ void Bullet::update(const sf::Vector2f& cannonPosition, std::vector<Brick>& bric
 }
 
 // Handle collision with bricks
+// Handle collision with bricks
 void Bullet::handleBrickCollision(std::vector<Brick>& bricks) {
-    for (auto it = bricks.begin(); it != bricks.end(); ) {
+    bool hasCollided = false; // Ensure one collision per frame
+    for (auto it = bricks.begin(); it != bricks.end() && !hasCollided; ) {
         if (sprite.getGlobalBounds().intersects(it->getGlobalBounds())) {
-            // Bounce the bullet off the brick
-            if (sprite.getGlobalBounds().left < it->getGlobalBounds().left) {
+            // Determine how to reflect the bullet by comparing positions
+            sf::FloatRect bulletBounds = sprite.getGlobalBounds();
+            sf::FloatRect brickBounds = it->getGlobalBounds();
+
+            float bulletCenterX = bulletBounds.left + bulletBounds.width / 2.f;
+            float bulletCenterY = bulletBounds.top + bulletBounds.height / 2.f;
+            float brickCenterX = brickBounds.left + brickBounds.width / 2.f;
+            float brickCenterY = brickBounds.top + brickBounds.height / 2.f;
+
+            float dx = bulletCenterX - brickCenterX;
+            float dy = bulletCenterY - brickCenterY;
+
+            // Check which axis the bullet hit and reflect accordingly
+            if (std::abs(dx) > std::abs(dy)) {
+                // Horizontal collision
                 velocity.x = -velocity.x;
-            } else if (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width > it->getGlobalBounds().left + it->getGlobalBounds().width) {
-                velocity.x = -velocity.x;
+            } else {
+                // Vertical collision
+                velocity.y = -velocity.y;
             }
 
-            if (sprite.getGlobalBounds().top < it->getGlobalBounds().top) {
-                velocity.y = -velocity.y;
-            } else if (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > it->getGlobalBounds().top + it->getGlobalBounds().height) {
-                velocity.y = -velocity.y;
-            }
-
-            // Remove the brick
+            // Remove the brick and stop checking for further collisions
             it = bricks.erase(it);
+            hasCollided = true;
         } else {
             ++it;
         }
     }
 }
+
+
 
 // Render method
 void Bullet::render(sf::RenderWindow& window) {

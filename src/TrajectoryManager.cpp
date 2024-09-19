@@ -25,8 +25,6 @@ void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f d
             }
         }
 
-        // Ignore brick collisions
-
         onBorderCollision(nextPoint, direction, windowSize);
 
         currentPoint = nextPoint;

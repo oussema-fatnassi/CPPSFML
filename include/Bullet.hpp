@@ -22,6 +22,7 @@ private:
     float speed;
     int damage;
     bool active;  // Flag to track if the bullet is active
+    sf::Vector2f velocity;  // Velocity of the bullet
 };
 
 #endif // BULLET_HPP

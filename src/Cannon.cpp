@@ -102,8 +102,8 @@ Bullet Cannon::shoot() {
 
     // Calculate the bullet's initial position at the top of the cannon
     float radians = (angle - 90.f) * 3.14159265f / 180.0f;
-    sf::Vector2f bulletPosition = cannonPosition + sf::Vector2f(std::cos(radians) * (sprite.getOrigin().y), 
-                                                                std::sin(radians) * (sprite.getOrigin().y));
+    sf::Vector2f bulletPosition = cannonPosition - sf::Vector2f(6.f, 1.f) + sf::Vector2f(std::cos(radians) * (sprite.getOrigin().y ), 
+                                                                std::sin(radians) * (sprite.getOrigin().y ));
 
     // Create a bullet with the correct rotation
     Bullet bullet(sf::Vector2f(bulletPosition), sf::Vector2f(bulletDimension), "../assets/images/Ball.png", angle, bulletSpeed, bulletDamage);

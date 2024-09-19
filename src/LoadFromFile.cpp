@@ -53,8 +53,8 @@ string LoadFromFile::getImagePath(int value) const {
 
 vector<Brick> LoadFromFile::createBricks() const {
     vector<Brick> bricks;
-    const float brickWidth = 50.0f;
-    const float brickHeight = 50.0f;
+    const float brickWidth = 60.0f;
+    const float brickHeight = 60.0f;
 
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {

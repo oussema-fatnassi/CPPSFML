@@ -18,6 +18,7 @@ public:
     float getRotation() const;
     void updateRotation(sf::RenderWindow& window);
     void drawTrajectory(sf::RenderWindow& window);
+    Bullet shoot();
 
     sf::Vector2f getPosition() const;
 private:

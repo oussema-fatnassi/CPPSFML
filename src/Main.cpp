@@ -14,21 +14,27 @@ int main() {
     sf::Event event;
     MathHelper mathHelper;  // Corrected declaration of MathHelper
 
+    // Create brick objects
     Brick brick = Brick(sf::Vector2f(100, 100), sf::Vector2f(50, 50), "../assets/images/Diamond.png", 100); // Create a brick object
     Brick brick1 = Brick(sf::Vector2f(150, 100), sf::Vector2f(50, 50), "../assets/images/Obsidian.png", 100); // Create a brick object
-    Brick brick2 = Brick(sf::Vector2f(200, 100), sf::Vector2f(50, 50), "../assets/images/Dirt.png", 100); // Create a brick object
-    Brick brick3 = Brick(sf::Vector2f(250, 100), sf::Vector2f(50, 50), "../assets/images/GoldOre.png", 100); // Create a brick object
-    Brick brick4 = Brick(sf::Vector2f(300, 100), sf::Vector2f(50, 50), "../assets/images/RubyOre.png", 100); // Create a brick object
-    Brick brick5 = Brick(sf::Vector2f(350, 100), sf::Vector2f(50, 50), "../assets/images/Stone.png", 100); // Create a brick object
-    Brick brick6 = Brick(sf::Vector2f(400, 100), sf::Vector2f(50, 50), "../assets/images/TNT.png", 100); // Create a brick object
+    Brick brick2 = Brick(sf::Vector2f(200, 100), sf::Vector2f(50, 50), "../assets/images/Dirt.png", 100); //
 
+    // Create a vector of bricks
+    std::vector<Brick> bricks = {brick, brick1, brick2};
 
-    std::vector<Brick> bricks = {brick, brick1, brick2, brick3, brick4, brick5, brick6}; // Create a vector of bricks
-
+    // Create a cannon object
     Cannon cannon = Cannon(sf::Vector2f (300, 800),sf::Vector2f (100, 200), "../assets/images/cannon.png"); // Create a cannon object
+
+    std::vector<Bullet> bullets; // Vector to store bullets
 
     while (window.isOpen()) { // Main game loop
         window.clear(sf::Color(251, 248, 239, 255)); // Clear the window
+
+        // Draw the trajectory line and get the vertex array
+        cannon.drawTrajectory(window);
+
+        // Update the cannon rotation
+        cannon.updateRotation(window);
 
         // Render the objects
         for (auto& brick : bricks) {
@@ -36,10 +42,13 @@ int main() {
         }
         cannon.render(window);
 
-        // Update the cannon rotation
-        cannon.updateRotation(window);
+        // Update and render bullets
+        for (auto& bullet : bullets) {
+            bullet.update(cannon.getPosition());  // Pass the cannon's position to the update method
+            bullet.render(window);  // Render the bullet
+        }
 
-        window.display(); // Display the window
+        window.display();  // Display the window
 
         // Event handling
         while (window.pollEvent(event)) {

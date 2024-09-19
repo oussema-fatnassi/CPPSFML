@@ -1,9 +1,12 @@
 #include "Bullet.hpp"
+#include "MathHelper.hpp"
+#include <cmath>
 
-Bullet::Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage) 
-    : GameObject(position, dimension, imagePath), rotation(rotation), speed(speed), damage(damage) {
-    loadTexture(imagePath);
-    sprite.setRotation(rotation);
+// Constructor definition
+Bullet::Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage)
+    : GameObject(position, dimension, imagePath), rotation(rotation), speed(speed), damage(damage), active(true) {
+    loadTexture(imagePath);  // Load the texture for the bullet
+    sprite.setRotation(rotation);  // Set the initial rotation
 }
 
 // Destructor definition
@@ -51,8 +54,6 @@ void Bullet::update(const sf::Vector2f& cannonPosition) {
     if (distanceToCannon < 50.0f || bulletPos.y >= groundLevel) {
         deactivate();  // Deactivate the bullet
     }
-
-    cout <<"Bullet position: " << bulletPos.x << ", " << bulletPos.y << endl;
 }
 
 // Render method
@@ -64,7 +65,6 @@ void Bullet::render(sf::RenderWindow& window) {
 
 // Deactivate the bullet
 void Bullet::deactivate() {
-    cout << "Bullet deactivated!" << endl;
     active = false;
 }
 

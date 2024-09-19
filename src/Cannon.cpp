@@ -90,7 +90,7 @@ sf::Vector2f Cannon::reflectDirection(const sf::Vector2f& direction, const sf::V
 Bullet Cannon::shoot() {
     cout << "Shooting!" << endl;
     // Set bullet properties: position, rotation, speed, damage
-    int bulletWidth = 10;  // Set appropriate width
+    int bulletWidth = 20;  // Set appropriate width
     int bulletHeight = 20; // Set appropriate height
     sf::Vector2f bulletDimension(bulletWidth, bulletHeight);
     float bulletSpeed = .1f; // Adjust the speed as needed
@@ -106,7 +106,7 @@ Bullet Cannon::shoot() {
                                                                 std::sin(radians) * (sprite.getOrigin().y));
 
     // Create a bullet with the correct rotation
-    Bullet bullet(sf::Vector2f(bulletPosition), sf::Vector2f(bulletDimension), "../assets/images/Diamond.png", angle, bulletSpeed, bulletDamage);
+    Bullet bullet(sf::Vector2f(bulletPosition), sf::Vector2f(bulletDimension), "../assets/images/Ball.png", angle, bulletSpeed, bulletDamage);
 
     // Move the bullet initially so it doesn't spawn inside the cannon
     bullet.update(cannonPosition);  // Pass the cannon's position to the update method

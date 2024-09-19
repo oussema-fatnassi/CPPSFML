@@ -51,6 +51,8 @@ void Bullet::update(const sf::Vector2f& cannonPosition) {
     if (distanceToCannon < 50.0f || bulletPos.y >= groundLevel) {
         deactivate();  // Deactivate the bullet
     }
+
+    cout <<"Bullet position: " << bulletPos.x << ", " << bulletPos.y << endl;
 }
 
 // Render method
@@ -62,6 +64,7 @@ void Bullet::render(sf::RenderWindow& window) {
 
 // Deactivate the bullet
 void Bullet::deactivate() {
+    cout << "Bullet deactivated!" << endl;
     active = false;
 }
 

@@ -29,7 +29,6 @@ void Cannon::updateRotation(sf::RenderWindow& window) {
     // If the mouse is below the cannon, do nothing (rotation remains unchanged)
 }
 
-
 void Cannon::setRotation(float rotation) {
     this->rotation = rotation;
     sprite.setRotation(rotation);
@@ -89,9 +88,11 @@ sf::Vector2f Cannon::reflectDirection(const sf::Vector2f& direction, const sf::V
     return direction - 2 * dotProduct * normal;
 }
 Bullet Cannon::shoot() {
+    cout << "Shooting!" << endl;
     // Set bullet properties: position, rotation, speed, damage
     int bulletWidth = 10;  // Set appropriate width
     int bulletHeight = 20; // Set appropriate height
+    sf::Vector2f bulletDimension(bulletWidth, bulletHeight);
     float bulletSpeed = .1f; // Adjust the speed as needed
     int bulletDamage = 10; // Set damage amount
 
@@ -105,10 +106,14 @@ Bullet Cannon::shoot() {
                                                                 std::sin(radians) * (sprite.getOrigin().y));
 
     // Create a bullet with the correct rotation
-    Bullet bullet(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, "../assets/images/brick.png", angle, bulletSpeed, bulletDamage);
+    Bullet bullet(sf::Vector2f(bulletPosition), sf::Vector2f(bulletDimension), "../assets/images/Diamond.png", angle, bulletSpeed, bulletDamage);
 
     // Move the bullet initially so it doesn't spawn inside the cannon
     bullet.update(cannonPosition);  // Pass the cannon's position to the update method
 
     return bullet;
+}
+
+sf::Vector2f Cannon::getPosition() const {
+    return sprite.getPosition();
 }

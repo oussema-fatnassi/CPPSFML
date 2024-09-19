@@ -3,12 +3,11 @@
 
 #include "GameObject.hpp"
 #include <string>
+#include "MathHelper.hpp"
 
 class Bullet : public GameObject {
 public:
     Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage);
-    void update();
-    Bullet(int x, int y, int width, int height, const std::string& imagePath, float rotation, float speed, int damage);
     ~Bullet(); // Destructor
 
     void update(const sf::Vector2f& cannonPosition); // Pass the cannon's position to update

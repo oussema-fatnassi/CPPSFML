@@ -1,15 +1,31 @@
 #include "GameManager.hpp"
 #include <iostream>
+#include <iomanip>  // For formatting the timer
+#include <sstream>  // For string manipulation
 
 GameManager::GameManager() 
     : window(sf::VideoMode(600, 900), "Breakout"), 
-      loadFromFile("../assets/map/matrix.txt"),
-      cannon(sf::Vector2f(300, 900), sf::Vector2f(100, 200), "../assets/images/cannon.png"),
-      quit(false) {
+    loadFromFile("../assets/map/matrix.txt"),
+    cannon(sf::Vector2f(300, 900), sf::Vector2f(100, 200), "../assets/images/cannon.png"),
+    quit(false) {
     
     loadFromFile.loadGrid();
     loadFromFile.printGrid();
     bricks = loadFromFile.createBricks();
+
+    // Load the font and setup the timer
+    if (!font.loadFromFile("../assets/fonts/ClearSansBold.ttf")) {
+        std::cerr << "Error: could not load font ClearSansBold.ttf" << std::endl;
+    }
+    setupTimer();
+}
+
+void GameManager::setupTimer() {
+    // Setup timer text properties
+    timerText.setFont(font);
+    timerText.setCharacterSize(24);            // Text size
+    timerText.setFillColor(sf::Color::Black);  // Text color
+    timerText.setPosition(10, window.getSize().y - 50);  // Position at bottom-left corner
 }
 
 void GameManager::run() {
@@ -63,6 +79,21 @@ void GameManager::renderGame() {
     for (auto& bullet : bullets) {
         bullet.render(window);
     }
+
+    // Update the timer text
+    sf::Time elapsed = clock.getElapsedTime();
+    int totalSeconds = static_cast<int>(elapsed.asSeconds());
+    int minutes = totalSeconds / 60;
+    int seconds = totalSeconds % 60;
+
+    // Format the timer as MM:SS
+    std::ostringstream timeStream;
+    timeStream << std::setfill('0') << std::setw(2) << minutes << ":"
+            << std::setfill('0') << std::setw(2) << seconds;
+    timerText.setString(timeStream.str());
+
+    // Draw the timer text
+    window.draw(timerText);
 
     window.display();
 }

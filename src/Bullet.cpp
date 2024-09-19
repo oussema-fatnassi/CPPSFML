@@ -7,6 +7,11 @@ Bullet::Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imag
     : GameObject(position, dimension, imagePath), rotation(rotation), speed(speed), damage(damage), active(true) {
     loadTexture(imagePath);  // Load the texture for the bullet
     sprite.setRotation(rotation);  // Set the initial rotation
+    sprite.setOrigin(dimension.x / 2.f, dimension.y / 2.f);  // Set the origin to the center of the bullet
+    sprite.setPosition(position);  // Set the initial position of the bullet
+    // Set the initial velocity based on the given rotation angle
+    float radians = (rotation - 90.f) * 3.14159265f / 180.0f;
+    velocity = sf::Vector2f(std::cos(radians), std::sin(radians)) * speed;
 }
 
 // Destructor definition
@@ -16,35 +21,43 @@ Bullet::~Bullet() {
 
 // Update method
 void Bullet::update(const sf::Vector2f& cannonPosition) {
-    // Convert the rotation angle from degrees to radians
-    float radians = (rotation - 90.f) * 3.14159265f / 180.0f;
-
-    // Calculate the current movement direction based on the rotation angle
-    sf::Vector2f direction(std::cos(radians), std::sin(radians));
-
     // Get the bullet's current position and window size
     sf::Vector2f bulletPos = sprite.getPosition();
-    sf::FloatRect bulletBounds = sprite.getGlobalBounds();
+    sf::FloatRect bulletBounds = sprite.getGlobalBounds();  // Global bounds of the bullet (x, y, width, height)
     sf::Vector2u windowSize(600, 900);  // Assuming a static window size for this example
 
-    // Detect collisions with the window's left or right boundary
-    if (bulletPos.x <= 0 || bulletPos.x + bulletBounds.width >= windowSize.x) {
-        sf::Vector2f normal(1.f, 0.f);  // Normal vector for vertical boundaries (left/right)
-        direction = MathHelper::reflectDirection(direction, normal);  // Reflect the direction on the x-axis
+    // Calculate the top-left and top-right positions of the bullet
+    sf::Vector2f topLeft(bulletBounds.left, bulletBounds.top);  // Top-left corner
+    sf::Vector2f topRight(bulletBounds.left + bulletBounds.width, bulletBounds.top);  // Top-right corner
+
+    // Detect collisions with the window's left boundary
+    if (topLeft.x <= 0) {
+        // Invert the x-direction (horizontal bounce)
+        velocity.x = -velocity.x;
+
+        // Correct the bullet's position so it doesn't go outside the left boundary
+        // sprite.setPosition(bulletBounds.width / 2, bulletPos.y);
+    }
+    // Detect collisions with the window's right boundary
+    else if (topRight.x >= windowSize.x) {
+        // Invert the x-direction (horizontal bounce)
+        velocity.x = -velocity.x;
+
+        // Correct the bullet's position so it doesn't go past the right boundary
+        // sprite.setPosition(windowSize.x - bulletBounds.width / 2, bulletPos.y);
     }
 
-    // Detect collisions with the window's top or bottom boundary
-    if (bulletPos.y <= 0) {
-        sf::Vector2f normal(0.f, 1.f);  // Normal vector for horizontal boundaries (top/bottom)
-        direction = MathHelper::reflectDirection(direction, normal);  // Reflect the direction on the y-axis
+    // Detect collisions with the window's top boundary
+    if (topLeft.y <= 0) {
+        // Invert the y-direction (vertical bounce)
+        velocity.y = -velocity.y;
+
+        // Correct the bullet's position so it doesn't go outside the top boundary
+        // sprite.setPosition(bulletPos.x, bulletBounds.height / 2);
     }
 
-    // Move the bullet in the new direction
-    sprite.move(direction * speed);
-
-    // Update the bullet's rotation to reflect the new movement direction
-    rotation = atan2(direction.y, direction.x) * 180.f / 3.14159265f + 90.f;
-    sprite.setRotation(rotation);
+    // Move the bullet using its velocity vector
+    sprite.move(velocity);
 
     // Calculate the distance between the bullet and the cannon
     float distanceToCannon = std::sqrt(std::pow(bulletPos.x - cannonPosition.x, 2) + std::pow(bulletPos.y - cannonPosition.y, 2));
@@ -55,6 +68,7 @@ void Bullet::update(const sf::Vector2f& cannonPosition) {
         deactivate();  // Deactivate the bullet
     }
 }
+
 
 // Render method
 void Bullet::render(sf::RenderWindow& window) {

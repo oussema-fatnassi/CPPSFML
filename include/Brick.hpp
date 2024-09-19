@@ -11,6 +11,11 @@ public:
     sf::FloatRect getGlobalBounds() const;
     sf::Vector2f getNormal(const sf::Vector2f& collisionPoint) const;
 
+    void reduceHealth(int damage);
+    
+    // Add this method to check if the brick is destroyed
+    bool isDestroyed() const;
+
 private:
     int health;
 };

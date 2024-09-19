@@ -3,13 +3,15 @@
 LoadFromFile::LoadFromFile(const string& path) : filePath(path) {
     // Initialize image paths
     imagePaths = {
-        {1, "../assets/images/Dirt.png"},
-        {2, "../assets/images/Stone.png"},
-        {3, "../assets/images/GoldOre.png"},
-        {4, "../assets/images/Diamond.png"},
-        {5, "../assets/images/Obsidian.png"},
-        {6, "../assets/images/RubyOre.png"},
-        {7, "../assets/images/TNT.png"}
+        {1, "../assets/images/Grass.png"},
+        {2, "../assets/images/Dirt.png"},
+        {3, "../assets/images/Stone.png"},
+        {4, "../assets/images/DeepSlate.png"},
+        {5, "../assets/images/GoldOre.png"},
+        {6, "../assets/images/Diamond.png"},
+        {7, "../assets/images/Obsidian.png"},
+        {8, "../assets/images/RubyOre.png"},
+        {10, "../assets/images/TNT.png"}
     };
 }
 

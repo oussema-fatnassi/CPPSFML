@@ -108,9 +108,6 @@ Bullet Cannon::shoot() {
     // Create a bullet with the correct rotation
     Bullet bullet(sf::Vector2f(bulletPosition), sf::Vector2f(bulletDimension), "../assets/images/Ball.png", angle, bulletSpeed, bulletDamage);
 
-    // Move the bullet initially so it doesn't spawn inside the cannon
-    bullet.update(cannonPosition);  // Pass the cannon's position to the update method
-
     return bullet;
 }
 

@@ -8,7 +8,7 @@ public:
     Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health);
     void render(sf::RenderWindow& window) override;
     int getHealth() const;
-    sf::FloatRect getBounds() const;
+    sf::FloatRect getGlobalBounds() const;
     sf::Vector2f getNormal(const sf::Vector2f& collisionPoint) const;
 
 private:

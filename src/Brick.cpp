@@ -13,12 +13,12 @@ int Brick::getHealth() const {
     return health;
 }
 
-sf::FloatRect Brick::getBounds() const {
+sf::FloatRect Brick::getGlobalBounds() const {
     return sprite.getGlobalBounds();
 }
 
 sf::Vector2f Brick::getNormal(const sf::Vector2f& collisionPoint) const {
-    sf::FloatRect bounds = getBounds();
+    sf::FloatRect bounds = getGlobalBounds();
 
     // Calculate distances to each side
     float distanceToLeft = collisionPoint.x - bounds.left;

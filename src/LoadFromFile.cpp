@@ -1,41 +1,40 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <unordered_map>
-#include <string>
-using namespace std;
+#include "LoadFromFile.hpp"
 
-const int SIZE = 9;
-vector<vector<int>> Grid;
+LoadFromFile::LoadFromFile(const string& path) : filePath(path) {
+    // Initialize image paths
+    imagePaths = {
+        {1, "../assets/images/Dirt.png"},
+        {2, "../assets/images/Stone.png"},
+        {3, "../assets/images/GoldOre.png"},
+        {4, "../assets/images/Diamond.png"},
+        {5, "../assets/images/Obsidian.png"},
+        {6, "../assets/images/RubyOre.png"},
+        {7, "../assets/images/TNT.png"}
+    };
+}
 
-// Load a grid from a file
-void loadGridFromFileSimple() {
-    const char* filename = "matrice.txt";
-
-    // Open the file
-    std::ifstream file(filename);
+void LoadFromFile::loadGrid() {
+    // Open the file using the provided path
+    std::ifstream file(filePath);
     if (!file.is_open()) {
-        std::cerr << "Error: Unable to open file " << filename << std::endl;
+        std::cerr << "Error: Unable to open file " << filePath << std::endl;
         return;
     }
 
-    Grid.clear();
-
-    // Read the grid from the file
+    grid.clear();
     vector<int> row(SIZE, 0);
-    vector<vector<int>> grid(SIZE, row);
-    int gridCount = 0;
+    vector<vector<int>> tempGrid(SIZE, row);
+
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            file >> grid[i][j];
+            file >> tempGrid[i][j];
         }
     }
-    Grid = grid;
+    grid = tempGrid;
     file.close();
 }
 
-// Print the grid
-void printGrid(const vector<vector<int>>& grid) {
+void LoadFromFile::printGrid() const {
     for (const auto& row : grid) {
         for (const auto& elem : row) {
             cout << elem << " | ";
@@ -44,32 +43,32 @@ void printGrid(const vector<vector<int>>& grid) {
     }
 }
 
-// Map image paths to values
-unordered_map<int, string> imagePaths = {
-    {0, "empty.png"},
-    {1, "image1.png"},
-    {2, "image2.png"},
-    {3, "image3.png"},
-    {4, "image4.png"},
-    {5, "image5.png"},
-    {6, "image6.png"},
-    {7, "image7.png"},
-    {8, "image8.png"},
-    {9, "image9.png"}
-};
-
-// Get the image path for a value
-string getImagePath(int value) {
+string LoadFromFile::getImagePath(int value) const {
     if (imagePaths.find(value) != imagePaths.end()) {
-        return imagePaths[value];
+        return imagePaths.at(value);
     } else {
         return "default.png"; // Return a default image if the value is not found
     }
 }
 
-/*int main() {
-    cout << "Hello, World!" << endl;
-    loadGridFromFileSimple();
-    printGrid(Grid);
-    return 0;
-}*/
+vector<Brick> LoadFromFile::createBricks() const {
+    vector<Brick> bricks;
+    const float brickWidth = 50.0f;
+    const float brickHeight = 50.0f;
+
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            int value = grid[i][j];
+            if (value != 0) {  // Assuming 0 means no brick
+                float x = j * brickWidth;
+                float y = i * brickHeight;
+                sf::Vector2f position(x, y);
+                sf::Vector2f dimension(brickWidth, brickHeight);
+                string imagePath = getImagePath(value);
+                Brick brick(position, dimension, imagePath, value);
+                bricks.push_back(brick);
+            }
+        }
+    }
+    return bricks;
+}

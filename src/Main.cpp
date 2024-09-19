@@ -6,6 +6,7 @@
 #include "Brick.hpp"           // Include Brick header
 #include "Cannon.hpp"          // Include Cannon header
 #include "Bullet.hpp"          // Include Bullet header
+#include "LoadFromFile.hpp"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(600, 900), "Breakout"); // Create a window with SFML
@@ -13,14 +14,19 @@ int main() {
     bool quit = false;
     sf::Event event;
     MathHelper mathHelper;  // Corrected declaration of MathHelper
+    LoadFromFile loadFromFile("../assets/map/matrix.txt");  // Load the matrix file
+    loadFromFile.loadGrid();  // Load the grid
+    loadFromFile.printGrid(); // Optional: print the grid to verify
 
+    string filePath = "../assets/map/matrix.txt";  // Path to your matrix file
+    vector<Brick> bricks = loadFromFile.createBricks();  // Create bricks from the matrix file
     // Create brick objects
     Brick brick = Brick(sf::Vector2f(100, 100), sf::Vector2f(50, 50), "../assets/images/Diamond.png", 100); // Create a brick object
     Brick brick1 = Brick(sf::Vector2f(150, 100), sf::Vector2f(50, 50), "../assets/images/Obsidian.png", 100); // Create a brick object
     Brick brick2 = Brick(sf::Vector2f(200, 100), sf::Vector2f(50, 50), "../assets/images/Dirt.png", 100); //
 
     // Create a vector of bricks
-    std::vector<Brick> bricks = {brick, brick1, brick2};
+    // std::vector<Brick> bricks = {brick, brick1, brick2};
 
     // Create a cannon object
     Cannon cannon = Cannon(sf::Vector2f (300, 900),sf::Vector2f (100, 200), "../assets/images/cannon.png"); // Create a cannon object

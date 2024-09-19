@@ -12,20 +12,16 @@ public:
     virtual void render(sf::RenderWindow& window) = 0;  // Pass window as a parameter in render
     void loadTexture(const string& imagePath);                             
 
-    int getX() const;                                                           // Getters
-    int getY() const;
-    int getWidth() const;
-    int getHeight() const;
+    sf::Vector2f getPosition() const;  // Getters
+    sf::Vector2f getDimension() const;
 
     void setTexture(const string& imagePath);                              // Setters     
 
 protected:
-    GameObject(int x, int y, int width, int height, const string& imagePath);  // Constructor
+    GameObject(sf::Vector2f(position), sf::Vector2f(dimension), const string& imagePath);  // Constructor
 
-    int x;                                                                      // Member variables
-    int y;
-    int width;
-    int height;
+    sf::Vector2f(position);
+    sf::Vector2f(dimension);
     sf::Texture* texture;
     sf::Sprite sprite;
 };

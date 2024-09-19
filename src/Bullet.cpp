@@ -3,8 +3,8 @@
 #include <cmath>
 
 // Constructor definition
-Bullet::Bullet(int x, int y, int width, int height, const std::string& imagePath, float rotation, float speed, int damage)
-    : GameObject(x, y, width, height, imagePath), rotation(rotation), speed(speed), damage(damage), active(true) {
+Bullet::Bullet(sf::Vector2f(position), sf::Vector2f(dimension), const std::string& imagePath, float rotation, float speed, int damage)
+    : GameObject(position, dimension, imagePath), rotation(rotation), speed(speed), damage(damage), active(true) {
     loadTexture(imagePath);  // Load the texture for the bullet
     sprite.setRotation(rotation);  // Set the initial rotation
 }

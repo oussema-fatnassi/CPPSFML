@@ -1,19 +1,19 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject(int x, int y, int width, int height, const string& imagePath) 
-    : x(x), y(y), width(width), height(height) {
+GameObject::GameObject(sf::Vector2f(position), sf::Vector2f(dimension), const string& imagePath) 
+    : position(position), dimension(dimension) {
     loadTexture(imagePath);
     sprite.setTexture(*texture);
-    sprite.setPosition(x, y);
+    sprite.setPosition(position);
 }
 
 void GameObject::loadTexture(const string& imagePath) {
     texture = AssetManager::getInstance().getTexture(imagePath);
     sprite.setTexture(*texture);
-    sprite.setPosition(static_cast<float>(x), static_cast<float>(y));
+    sprite.setPosition(position);
     sprite.setScale(
-        static_cast<float>(width) / texture->getSize().x,
-        static_cast<float>(height) / texture->getSize().y
+        dimension.x / static_cast<float>(texture->getSize().x),
+        dimension.y / static_cast<float>(texture->getSize().y)
     );
 }
 
@@ -21,20 +21,12 @@ void GameObject::setTexture(const string& imagePath) {
     loadTexture(imagePath);
 }
 
-int GameObject::getX() const {
-    return x;
+sf::Vector2f GameObject::getPosition() const {
+    return position;
 }
 
-int GameObject::getY() const {
-    return y;
-}
-
-int GameObject::getWidth() const {
-    return width;
-}
-
-int GameObject::getHeight() const {
-    return height;
+sf::Vector2f GameObject::getDimension() const {
+    return dimension;
 }
 
 void GameObject::render(sf::RenderWindow& window) {

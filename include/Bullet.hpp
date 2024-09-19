@@ -6,7 +6,7 @@
 
 class Bullet : public GameObject {
 public:
-    Bullet(int x, int y, int width, int height, const std::string& imagePath, float rotation, float speed, int damage);
+    Bullet(sf::Vector2f(position), sf::Vector2f(dimension), const std::string& imagePath, float rotation, float speed, int damage);
     ~Bullet(); // Destructor
 
     void update(const sf::Vector2f& cannonPosition); // Pass the cannon's position to update

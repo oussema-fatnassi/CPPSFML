@@ -1,9 +1,9 @@
 #include "Cannon.hpp"
 
-Cannon::Cannon(int x, int y, int width, int height, const string& imagePath)
-    : GameObject(x, y, width, height, imagePath) {
+Cannon::Cannon(sf::Vector2f(position), sf::Vector2f(dimension), const string& imagePath)
+    : GameObject(position, dimension, imagePath) {
     loadTexture(imagePath);
-    sprite.setOrigin(width / 2.f, height /1.23f); 
+    sprite.setOrigin(dimension.x / 2.f, dimension.y /1.23f); 
     sprite.setRotation(rotation);
 }
 
@@ -133,6 +133,7 @@ Bullet Cannon::shoot() {
     // Set bullet properties: position, rotation, speed, damage
     int bulletWidth = 10;  // Set appropriate width
     int bulletHeight = 20; // Set appropriate height
+    sf::Vector2f bulletDimensions(bulletWidth, bulletHeight);
     float bulletSpeed = .1f; // Adjust the speed as needed
     int bulletDamage = 10; // Set damage amount
 
@@ -146,7 +147,7 @@ Bullet Cannon::shoot() {
                                                                 std::sin(radians) * (sprite.getOrigin().y));
 
     // Create a bullet with the correct rotation
-    Bullet bullet(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, "../assets/images/brick.png", angle, bulletSpeed, bulletDamage);
+    Bullet bullet(bulletPosition, bulletDimensions, "../assets/images/brick.png", angle, bulletSpeed, bulletDamage);
 
     // Move the bullet initially so it doesn't spawn inside the cannon
     bullet.update(cannonPosition);  // Pass the cannon's position to the update method

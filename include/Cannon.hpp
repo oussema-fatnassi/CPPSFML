@@ -9,7 +9,7 @@
 
 class Cannon : public GameObject {
 public:
-    Cannon(int x, int y, int width, int height, const string& imagePath);
+    Cannon(sf::Vector2f(position), sf::Vector2f(dimension), const string& imagePath);
     void render(sf::RenderWindow& window) override;
     void setRotation(float rotation);
     float getRotation() const;

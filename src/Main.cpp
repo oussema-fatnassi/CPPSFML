@@ -12,17 +12,16 @@ int main() {
 
     bool quit = false;
     sf::Event event;
-    MathHelper mathHelper;  // Corrected declaration of MathHelper
 
     // Create brick objects
-    Brick brick(100, 100, 100, 100, "../assets/images/brick.png", 100); 
-    Brick brick2(200, 200, 100, 100, "../assets/images/brick.png", 100); 
+    Brick brick(sf::Vector2f(100,100), sf::Vector2f(100,100), "../assets/images/brick.png", 100); 
+    Brick brick2(sf::Vector2f(200,200), sf::Vector2f(100,100), "../assets/images/brick.png", 100); 
 
     // Create a vector of bricks
     std::vector<Brick> bricks = {brick, brick2};
 
     // Create a cannon object
-    Cannon cannon(300, 800, 100, 200, "../assets/images/cannon.png"); 
+    Cannon cannon(sf::Vector2f(300,800), sf::Vector2f(100,200), "../assets/images/cannon.png"); 
 
     std::vector<Bullet> bullets; // Vector to store bullets
 
@@ -30,22 +29,9 @@ int main() {
         window.clear(sf::Color(251, 248, 239, 255)); // Clear the window
 
         // Draw the trajectory line and get the vertex array
-        sf::VertexArray trajectoryLine = cannon.drawTrajectory(window);
+        // sf::VertexArray trajectoryLine = cannon.drawTrajectory(window);
 
-        // Iterate through all the bricks
-        for (auto& brick : bricks) {
-            // Check if the brick intersects with any of the lines in the trajectory line vertex array
-            for (size_t i = 0; i < trajectoryLine.getVertexCount() - 1; i++) {
-                sf::Vector2f lineStart = trajectoryLine[i].position;
-                sf::Vector2f lineEnd = trajectoryLine[i + 1].position;
-
-                if (mathHelper.lineIntersectsRectangle(lineStart, lineEnd, brick.getBounds())) {
-                    // Collision detected, handle it here
-                    std::cout << "Collision detected!" << std::endl;
-                    break;
-                }
-            }
-        }
+        // Iterate through all the bric
 
         // Update the cannon rotation
         cannon.updateRotation(window);

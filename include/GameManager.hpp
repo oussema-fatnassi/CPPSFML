@@ -24,9 +24,15 @@ private:
     std::vector<Brick> bricks;
     bool quit;
 
+    sf::Clock clock;   // For tracking elapsed time
+    sf::Text timerText; // For displaying the timer
+    sf::Font font;      // Font for rendering text
+
+
     void handleEvents();           // Handle window events
     void updateGame();             // Update game logic
     void renderGame();             // Render the game
+    void setupTimer();  
 };
 
 #endif

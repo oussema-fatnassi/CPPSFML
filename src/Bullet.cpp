@@ -20,7 +20,13 @@ Bullet::~Bullet() {
 }
 
 // Update method
-void Bullet::update(const sf::Vector2f& cannonPosition) {
+void Bullet::update(const sf::Vector2f& cannonPosition, std::vector<Brick>& bricks) {
+    // Move the bullet using its velocity vector
+    sprite.move(velocity);
+
+    // Check for collisions with bricks
+    handleBrickCollision(bricks);
+
     // Get the bullet's current position and window size
     sf::Vector2f bulletPos = sprite.getPosition();
     sf::FloatRect bulletBounds = sprite.getGlobalBounds();  // Global bounds of the bullet (x, y, width, height)
@@ -31,12 +37,7 @@ void Bullet::update(const sf::Vector2f& cannonPosition) {
     sf::Vector2f topRight(bulletBounds.left + bulletBounds.width, bulletBounds.top);  // Top-right corner
 
     // Detect collisions with the window's left boundary
-    if (topLeft.x <= 0) {
-        // Invert the x-direction (horizontal bounce)
-        velocity.x = -velocity.x;
-    }
-    // Detect collisions with the window's right boundary
-    else if (topRight.x >= windowSize.x) {
+    if (topLeft.x <= 0 || topRight.x >= windowSize.x) {
         // Invert the x-direction (horizontal bounce)
         velocity.x = -velocity.x;
     }
@@ -46,9 +47,6 @@ void Bullet::update(const sf::Vector2f& cannonPosition) {
         // Invert the y-direction (vertical bounce)
         velocity.y = -velocity.y;
     }
-
-    // Move the bullet using its velocity vector
-    sprite.move(velocity);
 
     // Calculate the distance between the bullet and the cannon
     float distanceToCannon = std::sqrt(std::pow(bulletPos.x - cannonPosition.x, 2) + std::pow(bulletPos.y - cannonPosition.y, 2));
@@ -60,6 +58,30 @@ void Bullet::update(const sf::Vector2f& cannonPosition) {
     }
 }
 
+// Handle collision with bricks
+void Bullet::handleBrickCollision(std::vector<Brick>& bricks) {
+    for (auto it = bricks.begin(); it != bricks.end(); ) {
+        if (sprite.getGlobalBounds().intersects(it->getGlobalBounds())) {
+            // Bounce the bullet off the brick
+            if (sprite.getGlobalBounds().left < it->getGlobalBounds().left) {
+                velocity.x = -velocity.x;
+            } else if (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width > it->getGlobalBounds().left + it->getGlobalBounds().width) {
+                velocity.x = -velocity.x;
+            }
+
+            if (sprite.getGlobalBounds().top < it->getGlobalBounds().top) {
+                velocity.y = -velocity.y;
+            } else if (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > it->getGlobalBounds().top + it->getGlobalBounds().height) {
+                velocity.y = -velocity.y;
+            }
+
+            // Remove the brick
+            it = bricks.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
 
 // Render method
 void Bullet::render(sf::RenderWindow& window) {

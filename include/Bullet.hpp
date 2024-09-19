@@ -4,6 +4,7 @@
 #include "GameObject.hpp"
 #include <string>
 #include "MathHelper.hpp"
+using namespace std;
 
 class Bullet : public GameObject {
 public:

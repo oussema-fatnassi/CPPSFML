@@ -1,8 +1,8 @@
 #ifndef BRICK_HPP
 #define BRICK_HPP
 
-#include "GameObject.hpp"
 #include "SoundManager.hpp"
+#include "GameObject.hpp"
 
 class Brick : public GameObject {
 public:

@@ -2,15 +2,14 @@
 #define LOADFROMFILE_HPP
 
 #include <SFML/Graphics.hpp>
-#include "Brick.hpp"  // Include Brick header
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <string>
 #include <SFML/Graphics.hpp>
-#include "Brick.hpp"  // Include Brick header
-#include "SoundManager.hpp"  // Include SoundManager header
+#include "SoundManager.hpp"
+#include "Brick.hpp"
+#include <unordered_map>
+#include <iostream>
 #include <fstream>
+#include <vector>
+#include <string>
 using namespace std;
 
 // Constants

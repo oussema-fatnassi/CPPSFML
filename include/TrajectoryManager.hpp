@@ -4,9 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "MathHelper.hpp"
 #include <vector>
-#include <cmath>
 #include <limits>
-
+#include <cmath>
 
 class Brick;
 

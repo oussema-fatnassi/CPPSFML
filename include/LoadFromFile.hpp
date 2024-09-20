@@ -7,6 +7,9 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <SFML/Graphics.hpp>
+#include "Brick.hpp"  // Include Brick header
+#include "SoundManager.hpp"  // Include SoundManager header
 #include <fstream>
 using namespace std;
 
@@ -25,7 +28,7 @@ public:
     void printGrid() const;
 
     // Create a vector of bricks from the grid
-    vector<Brick> createBricks() const;
+    vector<Brick> createBricks(SoundManager& soundManager) const;
 
 private:
     // Helper function to get the image path for a value

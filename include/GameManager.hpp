@@ -8,6 +8,7 @@
 #include "Cannon.hpp"
 #include "Bullet.hpp"
 #include "LoadFromFile.hpp"
+#include "SoundManager.hpp"
 #include <vector>
 #include <iostream>
 #include <iomanip>  // For formatting the timer
@@ -23,6 +24,7 @@ private:
     sf::RenderWindow window;
     MathHelper mathHelper;
     LoadFromFile loadFromFile;
+    SoundManager soundManager;
     Cannon cannon;
     std::vector<Bullet> bullets;
     std::vector<Brick> bricks;

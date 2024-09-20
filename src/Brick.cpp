@@ -1,7 +1,7 @@
 #include "Brick.hpp"
 
-Brick::Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health) 
-    : GameObject(position,dimension, imagePath), health(health), maxHealth(health), texturePath(imagePath) {
+Brick::Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health, SoundManager* soundManager) 
+    : GameObject(position,dimension, imagePath), health(health), maxHealth(health), texturePath(imagePath), soundManager(soundManager) {
     loadTexture(imagePath);
 }
 
@@ -20,6 +20,7 @@ void Brick::reduceHealth(int damage) {
     if (health <= maxHealth / 2 && maxHealth > 1) { // Ensure it's not a Grass brick (maxHealth should be > 1)
         string crackedTexturePath = getCrackedTexturePath();
         loadTexture(crackedTexturePath);
+        soundManager->playSound("brick-crack");
     }
 }
 

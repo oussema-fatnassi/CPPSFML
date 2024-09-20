@@ -11,7 +11,6 @@ LoadFromFile::LoadFromFile(const string& path) : filePath(path) {
         {6, "../assets/images/Diamond.png"},
         {7, "../assets/images/Obsidian.png"},
         {8, "../assets/images/RubyOre.png"},
-        {10, "../assets/images/TNT.png"}
     };
 }
 
@@ -53,7 +52,7 @@ string LoadFromFile::getImagePath(int value) const {
     }
 }
 
-vector<Brick> LoadFromFile::createBricks() const {
+vector<Brick> LoadFromFile::createBricks(SoundManager& soundManager) const {
     vector<Brick> bricks;
     const float brickWidth = 60.0f;
     const float brickHeight = 60.0f;
@@ -67,7 +66,7 @@ vector<Brick> LoadFromFile::createBricks() const {
                 sf::Vector2f position(x, y);
                 sf::Vector2f dimension(brickWidth, brickHeight);
                 string imagePath = getImagePath(value);
-                Brick brick(position, dimension, imagePath, value);
+                Brick brick(position, dimension, imagePath, value, &soundManager);
                 bricks.push_back(brick);
             }
         }

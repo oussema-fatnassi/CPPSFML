@@ -2,10 +2,11 @@
 #define BRICK_HPP
 
 #include "GameObject.hpp"
+#include "SoundManager.hpp"
 
 class Brick : public GameObject {
 public:
-    Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health);
+    Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health, SoundManager* soundManager);
     void render(sf::RenderWindow& window) override;
     int getHealth() const;
     sf::FloatRect getGlobalBounds() const;
@@ -21,6 +22,7 @@ private:
     int maxHealth;
     string texturePath;
     string getCrackedTexturePath() const;
+    SoundManager* soundManager;
 
 };
 

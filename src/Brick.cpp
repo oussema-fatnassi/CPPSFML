@@ -17,12 +17,19 @@ void Brick::reduceHealth(int damage) {
     health -= damage;
 
     // Change texture to cracked if health is at half or below
-    if (health <= maxHealth / 2 && maxHealth > 1) { // Ensure it's not a Grass brick (maxHealth should be > 1)
+    if (health <= maxHealth / 2 && maxHealth > 1 && !isCracked) { // Check if it's not cracked yet
         string crackedTexturePath = getCrackedTexturePath();
         loadTexture(crackedTexturePath);
         soundManager->playSound("brick-crack");
+        isCracked = true; // Set the flag to true
+    }
+
+    // Check if the brick is destroyed
+    if (isDestroyed()) {
+        soundManager->playSound("brick-crack"); // Play destroy sound
     }
 }
+
 
 bool Brick::isDestroyed() const {
     return health <= 0;

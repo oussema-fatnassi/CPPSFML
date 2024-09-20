@@ -23,7 +23,7 @@ private:
     string texturePath;
     string getCrackedTexturePath() const;
     SoundManager* soundManager;
-
+    bool isCracked = false;
 };
 
 #endif // BRICK_HPP

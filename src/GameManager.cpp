@@ -45,7 +45,7 @@ void GameManager::handleEvents() {
         }
 
         // Handle right-click to shoot
-        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right && bullets.size() == 0) {
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right ) {
             bullets.push_back(cannon.shoot());
         }
     }

@@ -4,7 +4,7 @@
 
 TrajectoryManager::TrajectoryManager() {}
 
-void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window) {
+void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window, float maxY) {
     sf::Vector2f currentPoint = startPoint;
     sf::VertexArray trajectoryLine(sf::LinesStrip);
     trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
@@ -13,19 +13,26 @@ void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f d
     int maxReflections = 15;
 
     while (maxReflections > 0) {
-        sf::Vector2f nextPoint = currentPoint;
-        float t_min = calculateLineEnd(nextPoint, direction, windowSize);
+                sf::Vector2f nextPoint = currentPoint;
 
-        if (nextPoint.y >= windowSize.y) {
-            float t_bottom = (windowSize.y - currentPoint.y) / direction.y;
-            if (t_bottom > 0) {
-                nextPoint = currentPoint + t_bottom * direction;
-                trajectoryLine.append(sf::Vertex(nextPoint, sf::Color::Red));
+        // Calculate next point based on the current direction
+        float t_max_y = (maxY - currentPoint.y) / direction.y;
+
+        // If t_max_y is positive, it means we will intersect maxY in the positive direction
+        if (t_max_y > 0) {
+            sf::Vector2f nextPoint = currentPoint + t_max_y * direction;
+
+            // Append the next point to the trajectory line
+            trajectoryLine.append(sf::Vertex(nextPoint, sf::Color::Red));
+
+            // If the next point is below maxY, break the loop
+            if (nextPoint.y >= maxY) {
                 break;
             }
         }
 
-        onBorderCollision(nextPoint, direction, windowSize);
+        // Handle border collisions
+        onBorderCollision(currentPoint, direction, windowSize);
 
         currentPoint = nextPoint;
         trajectoryLine.append(sf::Vertex(currentPoint, sf::Color::Red));
@@ -34,6 +41,8 @@ void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f d
 
     drawTrajectory(window, trajectoryLine);
 }
+
+
 
 
 void TrajectoryManager::onBorderCollision(sf::Vector2f& trajectoryPoint, sf::Vector2f& direction, const sf::Vector2u& windowSize) {

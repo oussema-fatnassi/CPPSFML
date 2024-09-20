@@ -43,7 +43,8 @@ void Cannon::drawTrajectory(sf::RenderWindow& window) {
     float angle = getRotation();
     float radians = (angle - 90.f) * 3.14159265f / 180.0f;
     sf::Vector2f direction(std::cos(radians), std::sin(radians));
-    trajectoryManager.updateTrajectory(cannonPos, direction, window);
+    float brickTopY = 300.0f;
+    trajectoryManager.updateTrajectory(cannonPos, direction, window, brickTopY);    
 }
 
 float Cannon::calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize) {
@@ -93,7 +94,7 @@ Bullet Cannon::shoot() {
     int bulletWidth = 20;  // Set appropriate width
     int bulletHeight = 20; // Set appropriate height
     sf::Vector2f bulletDimension(bulletWidth, bulletHeight);
-    float bulletSpeed = .1f; // Adjust the speed as needed
+    float bulletSpeed = .3f; // Adjust the speed as needed
     int bulletDamage = 1; // Set damage amount
 
     // Get the cannon's current position and rotation

@@ -1,7 +1,12 @@
 #include "TrajectoryManager.hpp"
 
+/*
+Class definition for TrajectoryManager, a class that manages the trajectory of a projectile in a 2D space.
+*/
+
 TrajectoryManager::TrajectoryManager() {}
 
+// Update the trajectory of the projectile
 void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window, float maxY) {
     sf::Vector2f currentPoint = startPoint;
     sf::VertexArray trajectoryLine(sf::LinesStrip);
@@ -40,9 +45,7 @@ void TrajectoryManager::updateTrajectory(sf::Vector2f startPoint, sf::Vector2f d
     drawTrajectory(window, trajectoryLine);
 }
 
-
-
-
+// Handle border collisions
 void TrajectoryManager::onBorderCollision(sf::Vector2f& trajectoryPoint, sf::Vector2f& direction, const sf::Vector2u& windowSize) {
     sf::Vector2f normal = determineBorderNormal(trajectoryPoint, windowSize);
     if (normal == sf::Vector2f(0, -1)) {
@@ -55,10 +58,12 @@ void TrajectoryManager::onBorderCollision(sf::Vector2f& trajectoryPoint, sf::Vec
     }
 }
 
+// Draw the trajectory line
 void TrajectoryManager::drawTrajectory(sf::RenderWindow& window, const sf::VertexArray& trajectoryLine) {
     window.draw(trajectoryLine);
 }
 
+// Calculate the end point of the line based on the direction
 float TrajectoryManager::calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize) {
     float t_max_x, t_max_y;
 
@@ -80,6 +85,7 @@ float TrajectoryManager::calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vecto
     return t_min;
 }
 
+// Determine the normal vector of the border hit
 sf::Vector2f TrajectoryManager::determineBorderNormal(const sf::Vector2f& lineEnd, const sf::Vector2u& windowSize) {
     if (lineEnd.x <= 0) {
         return sf::Vector2f(1, 0); // Left border

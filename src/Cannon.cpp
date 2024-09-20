@@ -1,5 +1,9 @@
 #include "Cannon.hpp"
 
+/*
+Class definition for Cannon, a class that represents the cannon in the game.
+*/
+
 Cannon::Cannon(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath)
     : GameObject(position, dimension, imagePath) {
     loadTexture(imagePath);
@@ -7,10 +11,12 @@ Cannon::Cannon(sf::Vector2f position, sf::Vector2f dimension, const string& imag
     sprite.setRotation(rotation);
 }
 
+// Render the cannon
 void Cannon::render(sf::RenderWindow& window) {
     window.draw(sprite);
 }
 
+// Update the rotation of the cannon based on the mouse position
 void Cannon::updateRotation(sf::RenderWindow& window) {
     sf::Vector2i mousePos = InputManager::getInstance().getMousePosition(window);
     sf::Vector2f cannonPos = sprite.getPosition();
@@ -29,15 +35,18 @@ void Cannon::updateRotation(sf::RenderWindow& window) {
     // If the mouse is below the cannon, do nothing (rotation remains unchanged)
 }
 
+// Set the rotation of the cannon
 void Cannon::setRotation(float rotation) {
     this->rotation = rotation;
     sprite.setRotation(rotation);
 }
 
+// Get the rotation of the cannon
 float Cannon::getRotation() const {
     return rotation;
 }
 
+// Draw the trajectory of the cannonball
 void Cannon::drawTrajectory(sf::RenderWindow& window) {
     sf::Vector2f cannonPos = sprite.getPosition();
     float angle = getRotation();
@@ -47,6 +56,7 @@ void Cannon::drawTrajectory(sf::RenderWindow& window) {
     trajectoryManager.updateTrajectory(cannonPos, direction, window, brickTopY);    
 }
 
+// Calculate the end point of the trajectory line
 float Cannon::calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direction, const sf::Vector2u& windowSize) {
     float t_max_x, t_max_y;
 
@@ -69,6 +79,7 @@ float Cannon::calculateLineEnd(sf::Vector2f& lineEnd, const sf::Vector2f& direct
     return t_min;
 }
 
+// Determine the normal vector of the border hit
 sf::Vector2f Cannon::determineBorderNormal(const sf::Vector2f& lineEnd, const sf::Vector2u& windowSize) {
     if (lineEnd.x <= 0) {
         return sf::Vector2f(1, 0); // Left border
@@ -82,12 +93,14 @@ sf::Vector2f Cannon::determineBorderNormal(const sf::Vector2f& lineEnd, const sf
     return sf::Vector2f(0, 0); // No border hit
 }
 
-
+// Reflect the direction vector around the normal vector
 sf::Vector2f Cannon::reflectDirection(const sf::Vector2f& direction, const sf::Vector2f& normal) {
     // Reflect the direction vector around the normal
     float dotProduct = MathHelper::dotProduct(direction, normal);
     return direction - 2 * dotProduct * normal;
 }
+
+// Shoot a bullet from the cannon
 Bullet Cannon::shoot() {
     cout << "Shooting!" << endl;
     // Set bullet properties: position, rotation, speed, damage
@@ -112,6 +125,7 @@ Bullet Cannon::shoot() {
     return bullet;
 }
 
+// Get the position of the cannon
 sf::Vector2f Cannon::getPosition() const {
     return sprite.getPosition();
 }

@@ -1,7 +1,10 @@
 #include "Bullet.hpp"
 #include "MathHelper.hpp"
 
-// Constructor definition
+/*
+Class definition for Bullet, a class that represents a bullet in the game.
+*/
+
 Bullet::Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage)
     : GameObject(position, dimension, imagePath), rotation(rotation), speed(speed), damage(damage), active(true) {
     loadTexture(imagePath);  // Load the texture for the bullet
@@ -95,9 +98,6 @@ void Bullet::handleBrickCollision(std::vector<Brick>& bricks) {
         }
     }
 }
-
-
-
 
 // Render method
 void Bullet::render(sf::RenderWindow& window) {

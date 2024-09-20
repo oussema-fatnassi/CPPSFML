@@ -1,5 +1,10 @@
 #include "MathHelper.hpp"
 
+/*
+Class definition for MathHelper, a class that provides various mathematical helper functions.
+*/
+
+// Calculates the angle between two points
 float MathHelper::getAngle(float x1, float y1, float x2, float y2) {
     sf::Vector2f up(0, 1);
     sf::Vector2f p0(x1, y1);
@@ -21,14 +26,17 @@ float MathHelper::getAngle(float x1, float y1, float x2, float y2) {
         return -angle;
 }
 
+// Calculates the dot product between two vectors
 float MathHelper::dotProduct(const sf::Vector2f& v1, const sf::Vector2f& v2) {
     return v1.x * v2.x + v1.y * v2.y;
 }
 
+// Calculates the magnitude of a vector
 float MathHelper::magnitude(const sf::Vector2f& v) {
     return std::sqrt(v.x * v.x + v.y * v.y);
 }
 
+// Calculates the collision angle between a direction vector and a surface normal
 float MathHelper::calculateCollisionAngle(const sf::Vector2f& direction, const sf::Vector2f& normal) {
     // Normalize the direction vector
     float dirLength = magnitude(direction);
@@ -41,6 +49,7 @@ float MathHelper::calculateCollisionAngle(const sf::Vector2f& direction, const s
     return std::acos(dot) * 180.0f / 3.14159265f;
 }
 
+// Checks if a line intersects a rectangle
 bool MathHelper::lineIntersectsRectangle(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::FloatRect& rect) {
     // Check if the line from p1 to p2 intersects any side of the rectangle
     sf::Vector2f topLeft(rect.left, rect.top);
@@ -55,7 +64,7 @@ bool MathHelper::lineIntersectsRectangle(const sf::Vector2f& p1, const sf::Vecto
            MathHelper::lineIntersectsLine(p1, p2, bottomLeft, topLeft);
 }
 
-
+// Checks if two lines intersect
 bool MathHelper::lineIntersectsLine(const sf::Vector2f& a1, const sf::Vector2f& a2, 
                                     const sf::Vector2f& b1, const sf::Vector2f& b2) {
     float denominator = (a2.x - a1.x) * (b2.y - b1.y) - (a2.y - a1.y) * (b2.x - b1.x);
@@ -70,11 +79,12 @@ bool MathHelper::lineIntersectsLine(const sf::Vector2f& a1, const sf::Vector2f& 
     return (ua >= 0.0f && ua <= 1.0f && ub >= 0.0f && ub <= 1.0f);
 }
 
+// Reflects a direction vector around a normal vector
 sf::Vector2f MathHelper::reflectDirection(const sf::Vector2f& incident, const sf::Vector2f& normal) {
     return incident - 2.0f * MathHelper::dotProduct(incident, normal) * normal;
 }
 
-
+// Calculates the intersection point of a line with a rectangle
 sf::Vector2f MathHelper::calculateIntersectionPoint(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::FloatRect& rect) {
     // Find the intersection point of the line from p1 to p2 with the rectangle
     // This function assumes that an intersection exists
@@ -96,6 +106,7 @@ sf::Vector2f MathHelper::calculateIntersectionPoint(const sf::Vector2f& p1, cons
     }
 }
 
+// Calculates the intersection point of two lines
 sf::Vector2f MathHelper::getLineIntersection(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::Vector2f& q1, const sf::Vector2f& q2) {
     // Calculate the intersection point of the lines from p1 to p2 and from q1 to q2
     // This function assumes that an intersection exists

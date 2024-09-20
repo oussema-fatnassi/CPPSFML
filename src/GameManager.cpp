@@ -1,5 +1,9 @@
 #include "GameManager.hpp"
 
+/*
+Class definition for GameManager, a class that manages the game loop and game objects.
+*/
+
 GameManager::GameManager() 
     : window(sf::VideoMode(600, 900), "Breakout"), 
     loadFromFile("../assets/map/matrix.txt"),
@@ -29,6 +33,7 @@ void GameManager::setupTimer() {
     timerText.setPosition(10, window.getSize().y - 50);  // Position at bottom-left corner
 }
 
+// Main game loop
 void GameManager::run() {
     while (window.isOpen()) {
         handleEvents();
@@ -37,6 +42,7 @@ void GameManager::run() {
     }
 }
 
+// Handle window events
 void GameManager::handleEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -52,6 +58,7 @@ void GameManager::handleEvents() {
     }
 }
 
+// Update game logic
 void GameManager::updateGame() {
     cannon.updateRotation(window);
 
@@ -66,6 +73,7 @@ void GameManager::updateGame() {
     }
 }
 
+// Render the game
 void GameManager::renderGame() {
     window.clear(sf::Color(251, 248, 239, 255));
 

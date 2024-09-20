@@ -1,18 +1,24 @@
 #include "Brick.hpp"
 
+/*
+Class definition for Brick, a class that represents a brick in the game.
+*/
+
 Brick::Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health, SoundManager* soundManager) 
     : GameObject(position,dimension, imagePath), health(health), maxHealth(health), texturePath(imagePath), soundManager(soundManager) {
     loadTexture(imagePath);
 }
 
+// Render the brick
 void Brick::render(sf::RenderWindow& window) {
     window.draw(sprite);
 }
-
+// Get the health of the brick
 int Brick::getHealth() const {
     return health;
 }
 
+// Reduce the health of the brick by the given damage amount
 void Brick::reduceHealth(int damage) {
     health -= damage;
 
@@ -30,15 +36,17 @@ void Brick::reduceHealth(int damage) {
     }
 }
 
-
+// Check if the brick is destroyed
 bool Brick::isDestroyed() const {
     return health <= 0;
 }
 
+// Get the global bounds of the brick
 sf::FloatRect Brick::getGlobalBounds() const {
     return sprite.getGlobalBounds();
 }
 
+// Get the normal vector of the brick at the given collision point
 sf::Vector2f Brick::getNormal(const sf::Vector2f& collisionPoint) const {
     sf::FloatRect bounds = getGlobalBounds();
 
@@ -63,6 +71,7 @@ sf::Vector2f Brick::getNormal(const sf::Vector2f& collisionPoint) const {
     }
 }
 
+// Get the path to the cracked texture
 string Brick::getCrackedTexturePath() const {
     size_t lastDot = texturePath.find_last_of(".");
     if (lastDot != string::npos) {
@@ -70,4 +79,3 @@ string Brick::getCrackedTexturePath() const {
     }
     return texturePath + "-cracked"; // Fallback if no dot found
 }
-

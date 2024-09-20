@@ -1,5 +1,9 @@
 #include "LoadFromFile.hpp"
 
+/*
+Class definition for LoadFromFile, a class that loads a grid from a file and creates bricks from the grid.
+*/
+
 LoadFromFile::LoadFromFile(const string& path) : filePath(path) {
     // Initialize image paths
     imagePaths = {
@@ -14,6 +18,7 @@ LoadFromFile::LoadFromFile(const string& path) : filePath(path) {
     };
 }
 
+// Load the grid from the file
 void LoadFromFile::loadGrid() {
     // Open the file using the provided path
     std::ifstream file(filePath);
@@ -35,6 +40,7 @@ void LoadFromFile::loadGrid() {
     file.close();
 }
 
+// Print the grid to the console
 void LoadFromFile::printGrid() const {
     for (const auto& row : grid) {
         for (const auto& elem : row) {
@@ -44,6 +50,7 @@ void LoadFromFile::printGrid() const {
     }
 }
 
+// Get the image path for a given value
 string LoadFromFile::getImagePath(int value) const {
     if (imagePaths.find(value) != imagePaths.end()) {
         return imagePaths.at(value);
@@ -52,6 +59,7 @@ string LoadFromFile::getImagePath(int value) const {
     }
 }
 
+// Create a vector of bricks from the grid
 vector<Brick> LoadFromFile::createBricks(SoundManager& soundManager) const {
     vector<Brick> bricks;
     const float brickWidth = 60.0f;

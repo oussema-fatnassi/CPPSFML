@@ -8,7 +8,11 @@ GameManager::GameManager()
     
     loadFromFile.loadGrid();
     loadFromFile.printGrid();
-    bricks = loadFromFile.createBricks();
+    bricks = loadFromFile.createBricks(soundManager);
+
+    soundManager.loadSound("brick-crack", "../assets/sounds/brickCrack.ogg");
+    soundManager.loadSound("ore-crack", "../assets/sounds/oreCrack.ogg");
+    soundManager.loadSound("stone-crack", "../assets/sounds/stoneCrack.ogg");
 
     // Load the font and setup the timer
     if (!font.loadFromFile("../assets/fonts/ClearSansBold.ttf")) {

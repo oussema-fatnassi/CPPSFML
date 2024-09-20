@@ -2,8 +2,8 @@
 #define GAMEOBJECT_HPP
 
 #include <SFML/Graphics.hpp>
-#include <string>
 #include "AssetManager.hpp"
+#include <string>
 using namespace std;
 
 class GameObject {  

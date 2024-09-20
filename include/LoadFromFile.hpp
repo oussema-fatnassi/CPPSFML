@@ -1,12 +1,12 @@
 #ifndef LOADFROMFILE_HPP
 #define LOADFROMFILE_HPP
 
+#include <SFML/Graphics.hpp>
+#include "Brick.hpp"  // Include Brick header
 #include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <string>
-#include <SFML/Graphics.hpp>
-#include "Brick.hpp"  // Include Brick header
 #include <fstream>
 using namespace std;
 

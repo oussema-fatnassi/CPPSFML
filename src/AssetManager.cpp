@@ -1,5 +1,9 @@
 #include "AssetManager.hpp"
 
+/*
+Class definition for AssetManager, a class that manages game assets such as textures.
+*/
+
 AssetManager::AssetManager() {}                                                                       // Constructor
 
 AssetManager::AssetManager(const AssetManager&) {}                                                 // Copy constructor

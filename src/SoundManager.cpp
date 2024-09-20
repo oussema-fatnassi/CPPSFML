@@ -1,7 +1,12 @@
 #include "SoundManager.hpp"
 
+/*
+Class definition for SoundManager, a class that manages the loading and playing of sounds.
+*/
+
 SoundManager::SoundManager() {}
 
+// Load the sound with the given name and file path
 void SoundManager::loadSound(const std::string& name, const std::string& filePath) {
     sf::SoundBuffer buffer;
     if (buffer.loadFromFile(filePath)) {
@@ -13,6 +18,7 @@ void SoundManager::loadSound(const std::string& name, const std::string& filePat
     }
 }
 
+// Play the sound with the given name
 void SoundManager::playSound(const std::string& name) {
     if (sounds.find(name) != sounds.end()) {
         sounds[name].play();

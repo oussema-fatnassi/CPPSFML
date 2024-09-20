@@ -1,13 +1,13 @@
 #ifndef CANNON_HPP
 #define CANNON_HPP
 
-#include "GameObject.hpp"
+#include "TrajectoryManager.hpp"
 #include "InputManager.hpp"
-#include "Bullet.hpp"
+#include "GameObject.hpp"
 #include "MathHelper.hpp"
+#include "Bullet.hpp"
 #include <cmath>
 #include <vector>
-#include "TrajectoryManager.hpp"
 using namespace std;
 
 class Cannon : public GameObject {

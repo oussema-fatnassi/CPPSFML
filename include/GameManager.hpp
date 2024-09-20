@@ -3,17 +3,16 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "MathHelper.hpp"
-#include "Brick.hpp"
-#include "Cannon.hpp"
-#include "Bullet.hpp"
 #include "LoadFromFile.hpp"
 #include "SoundManager.hpp"
+#include "MathHelper.hpp"
+#include "Cannon.hpp"
+#include "Bullet.hpp"
+#include "Brick.hpp"
 #include <vector>
 #include <iostream>
 #include <iomanip>  // For formatting the timer
 #include <sstream>  // For string manipulation
-
 
 class GameManager {
 public:

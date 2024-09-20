@@ -2,9 +2,9 @@
 #define ASSETMANAGER_HPP
 
 #include <SFML/Graphics.hpp>
+#include <unordered_map>
 #include <iostream>
 #include <string>
-#include <unordered_map>
 using namespace std;
 
 class AssetManager {

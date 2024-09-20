@@ -2,9 +2,9 @@
 #define SOUND_MANAGER_HPP
 
 #include <SFML/Audio.hpp>
-#include <map>
-#include <string>
 #include <iostream>
+#include <string>
+#include <map>
 
 class SoundManager {
 public:

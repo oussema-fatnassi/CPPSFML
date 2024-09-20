@@ -1,7 +1,4 @@
 #include "GameManager.hpp"
-#include <iostream>
-#include <iomanip>  // For formatting the timer
-#include <sstream>  // For string manipulation
 
 GameManager::GameManager() 
     : window(sf::VideoMode(600, 900), "Breakout"), 

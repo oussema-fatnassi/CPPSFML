@@ -1,6 +1,5 @@
 #include "Bullet.hpp"
 #include "MathHelper.hpp"
-#include <cmath>
 
 // Constructor definition
 Bullet::Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage)

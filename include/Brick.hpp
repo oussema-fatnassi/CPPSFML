@@ -18,6 +18,10 @@ public:
 
 private:
     int health;
+    int maxHealth;
+    string texturePath;
+    string getCrackedTexturePath() const;
+
 };
 
 #endif // BRICK_HPP

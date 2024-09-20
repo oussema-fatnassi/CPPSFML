@@ -1,7 +1,7 @@
 #include "Brick.hpp"
 
 Brick::Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health) 
-    : GameObject(position,dimension, imagePath), health(health) {
+    : GameObject(position,dimension, imagePath), health(health), maxHealth(health), texturePath(imagePath) {
     loadTexture(imagePath);
 }
 
@@ -15,6 +15,12 @@ int Brick::getHealth() const {
 
 void Brick::reduceHealth(int damage) {
     health -= damage;
+
+    // Change texture to cracked if health is at half or below
+    if (health <= maxHealth / 2 && maxHealth > 1) { // Ensure it's not a Grass brick (maxHealth should be > 1)
+        string crackedTexturePath = getCrackedTexturePath();
+        loadTexture(crackedTexturePath);
+    }
 }
 
 bool Brick::isDestroyed() const {
@@ -48,3 +54,12 @@ sf::Vector2f Brick::getNormal(const sf::Vector2f& collisionPoint) const {
         return sf::Vector2f(0.f, 1.f);  // Bottom side
     }
 }
+
+string Brick::getCrackedTexturePath() const {
+    size_t lastDot = texturePath.find_last_of(".");
+    if (lastDot != string::npos) {
+        return texturePath.substr(0, lastDot) + "-cracked" + texturePath.substr(lastDot);
+    }
+    return texturePath + "-cracked"; // Fallback if no dot found
+}
+

@@ -2,9 +2,10 @@
 #define BULLET_HPP
 
 #include "GameObject.hpp"
-#include <string>
 #include "MathHelper.hpp"
 #include "Brick.hpp"
+#include <string>
+#include <cmath>
 using namespace std;
 
 class Bullet : public GameObject {

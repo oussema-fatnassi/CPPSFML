@@ -2,8 +2,11 @@
 #define TRAJECTORY_MANAGER_HPP
 
 #include <SFML/Graphics.hpp>
-#include <vector>
 #include "MathHelper.hpp"
+#include <vector>
+#include <cmath>
+#include <limits>
+
 
 class Brick;
 

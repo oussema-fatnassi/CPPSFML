@@ -1,6 +1,4 @@
 #include "TrajectoryManager.hpp"
-#include <cmath>
-#include <limits>
 
 TrajectoryManager::TrajectoryManager() {}
 

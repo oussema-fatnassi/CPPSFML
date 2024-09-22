@@ -9,6 +9,7 @@ public:
     ~Image() = default;
 
     void render(sf::RenderWindow& window) override;  // Use the inherited render function
+    sf::FloatRect getGlobalBounds() const;  // Get the global bounds of the image
 };
 
 #endif  // IMAGE_HPP

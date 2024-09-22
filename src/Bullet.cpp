@@ -22,43 +22,44 @@ Bullet::~Bullet() {
 }
 
 // Update method
-void Bullet::update(const sf::Vector2f& cannonPosition, std::vector<Brick>& bricks) {
+void Bullet::update(const sf::Vector2f& cannonPosition, std::vector<Brick>& bricks, std::vector<Image>& walls) {
     // Move the bullet using its velocity vector
     sprite.move(velocity);
 
     // Check for collisions with bricks
     handleBrickCollision(bricks);
 
-    // Get the bullet's current position and window size
-    sf::Vector2f bulletPos = sprite.getPosition();
-    sf::FloatRect bulletBounds = sprite.getGlobalBounds();  // Global bounds of the bullet (x, y, width, height)
-    sf::Vector2u windowSize(600, 900);  // Assuming a static window size for this example
+    // Check for collisions with the wall images
+    for (auto& wall : walls) {
+        if (sprite.getGlobalBounds().intersects(wall.getGlobalBounds())) {
+            sf::FloatRect bulletBounds = sprite.getGlobalBounds();
+            sf::FloatRect wallBounds = wall.getGlobalBounds();
 
-    // Calculate the top-left and top-right positions of the bullet
-    sf::Vector2f topLeft(bulletBounds.left, bulletBounds.top);  // Top-left corner
-    sf::Vector2f topRight(bulletBounds.left + bulletBounds.width, bulletBounds.top);  // Top-right corner
+            float bulletCenterX = bulletBounds.left + bulletBounds.width / 2.f;
+            float bulletCenterY = bulletBounds.top + bulletBounds.height / 2.f;
+            float wallCenterX = wallBounds.left + wallBounds.width / 2.f;
+            float wallCenterY = wallBounds.top + wallBounds.height / 2.f;
 
-    // Detect collisions with the window's left boundary
-    if (topLeft.x <= 0 || topRight.x >= windowSize.x) {
-        // Invert the x-direction (horizontal bounce)
-        velocity.x = -velocity.x;
+            float dx = bulletCenterX - wallCenterX;
+            float dy = bulletCenterY - wallCenterY;
+
+            if (std::abs(dx) > std::abs(dy)) {
+                velocity.x = -velocity.x;  // Reflect horizontally
+            } else {
+                velocity.y = -velocity.y;  // Reflect vertically
+            }
+
+            break;  // Only handle one collision at a time
+        }
     }
-
-    // Detect collisions with the window's top boundary
-    if (topLeft.y <= 0) {
-        // Invert the y-direction (vertical bounce)
-        velocity.y = -velocity.y;
-    }
-
-    // Calculate the distance between the bullet and the cannon
-    float distanceToCannon = std::sqrt(std::pow(bulletPos.x - cannonPosition.x, 2) + std::pow(bulletPos.y - cannonPosition.y, 2));
 
     // Deactivate bullet if it is near the cannon or hits the ground
-    float groundLevel = 850.0f;  // Define the ground level (bottom of the screen)
-    if (distanceToCannon < 50.0f || bulletPos.y >= groundLevel) {
+    float groundLevel = 825.0f;  // Define the ground level (bottom of the screen)
+    if (sprite.getPosition().y >= groundLevel) {
         deactivate();  // Deactivate the bullet
     }
 }
+
 
 // Handle collision with bricks
 void Bullet::handleBrickCollision(std::vector<Brick>& bricks) {

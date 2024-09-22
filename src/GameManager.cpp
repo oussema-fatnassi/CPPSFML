@@ -30,9 +30,9 @@ GameManager::GameManager()
 void GameManager::setupTimer() {
     // Setup timer text properties
     timerText.setFont(font);
-    timerText.setCharacterSize(24);            // Text size
+    timerText.setCharacterSize(40);            // Text size
     timerText.setFillColor(sf::Color::Black);  // Text color
-    timerText.setPosition(10, window.getSize().y - 50);  // Position at bottom-left corner
+    timerText.setPosition(50, 25);  // Position at bottom-left corner
 }
 
 // Main game loop
@@ -44,6 +44,10 @@ void GameManager::run() {
             menu.update();
             menu.render();
         } else if (menu.gameState == Menu::GameState::IN_GAME) {
+            if (menu.continueClicked) {
+                startTimer();                // Start or reset the timer
+                menu.continueClicked = false; // Reset the flag to avoid repeated calls
+            }
             updateGame();
             renderGame();
         }
@@ -141,3 +145,8 @@ void GameManager::renderWalls(sf::RenderWindow& window) {
         wall.render(window);  // Render each wall image
     }
 }
+
+void GameManager::startTimer() {
+    clock.restart();      // Reset the timer clock
+}
+

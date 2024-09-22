@@ -45,6 +45,7 @@ private:
     void setupTimer();  
     void createWalls();
     void renderWalls(sf::RenderWindow& window);
+    void startTimer();
 };
 
 #endif

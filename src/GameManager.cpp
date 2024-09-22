@@ -49,11 +49,49 @@ void GameManager::run() {
                 menu.continueClicked = false; // Reset the flag to avoid repeated calls
             }
             updateGame();
-            renderGame();
+
+            // Check if the game is over or won
+            if (checkGameOver()) {
+                if(!gameOver) {
+                    gameOver = true;
+                    menu.currentMenu = Menu::MenuState::MAIN_MENU;  // Return to main menu on game over
+                    renderGameOver();  // Display Game Over screen
+                }
+            } else if (checkGameWin()) {
+                if(!gameWin) {
+                    gameWin = true;
+                    menu.currentMenu = Menu::MenuState::MAIN_MENU;  // Return to main menu on game win
+                    renderGameWin();  // Display Game Win screen
+                }
+            } else {
+                renderGame();  // Continue rendering the game if not won or lost
+            }
+        }
+        if (gameOver) {
+            // Check hover and click detection for game over buttons
+            sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+            bool mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+            for (auto& button : gameOverButtons) {
+                button.update(mousePos, mousePressed); // Update hover and click states
+            }
+            
+            renderGameOver();  // Render the game over screen and buttons
+        } else if (gameWin) {
+            // Check hover and click detection for game win buttons
+            sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+            bool mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+            for (auto& button : gameWinButtons) {
+                button.update(mousePos, mousePressed); // Update hover and click states
+            }
+
         }
     }
 }
 
+
+// Handle window events
 // Handle window events
 void GameManager::handleEvents() {
     sf::Event event;
@@ -67,8 +105,20 @@ void GameManager::handleEvents() {
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right ) {
             bullets.push_back(cannon.shoot());
         }
+
+        // Let the menu handle its own events when in the menu
+        if (menu.gameState == Menu::GameState::IN_MENU) {
+            menu.handleEvents(event);
+        }
+        // In the relevant section of handleEvents or main game loop
+        if (menu.currentMenu == Menu::MenuState::MAIN_MENU) {
+            gameOver = false;  // Reset game over state
+            gameWin = false;   // Reset game win state
+        }
+
     }
 }
+
 
 // Update game logic
 void GameManager::updateGame() {
@@ -82,6 +132,17 @@ void GameManager::updateGame() {
         } else {
             ++it;
         }
+    }
+
+    // Check game over or game win conditions
+    if (checkGameOver()) {
+        std::cout << "Game Over! Timer exceeded 1 minute." << std::endl;
+        return;
+    }
+
+    if (checkGameWin()) {
+        std::cout << "Game Win! All bricks destroyed." << std::endl;
+        return;
     }
 }
 
@@ -150,3 +211,109 @@ void GameManager::startTimer() {
     clock.restart();      // Reset the timer clock
 }
 
+bool GameManager::checkGameOver() {
+    sf::Time elapsed = clock.getElapsedTime();
+    if (elapsed.asSeconds() >= 180 && !bricks.empty()) {
+        std::cout << "Game Over! Timer exceeded 1 minute." << std::endl;
+        return true;
+    }
+    return false;
+}
+
+bool GameManager::checkGameWin() {
+    if (bricks.empty()) {
+        std::cout << "You Win! All bricks destroyed." << std::endl;
+        return true;
+    }
+    return false;
+}
+
+void GameManager::renderGameOver() {
+    window.clear(sf::Color(0, 0, 0));  // Black background
+    gameOverButtons.clear();  // Clear the buttons
+    gameOverButtons.reserve(2);  // Reserve space for two buttons
+
+    sf::Text gameOverText;
+    gameOverText.setFont(font);
+    gameOverText.setString("Game Over!");
+    gameOverText.setCharacterSize(50);
+    gameOverText.setFillColor(sf::Color::Red);
+    gameOverText.setPosition(200, 400);  // Centered
+
+    gameOverButtons.emplace_back(
+        sf::Vector2f(250, 700), sf::Vector2f(200, 50),
+        "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
+        [this]() {
+            std::cout << "Restart button clicked!" << std::endl;
+            resetGame();  // Reset the game
+        }
+    );
+    gameOverButtons.back().setText("RESTART", font, 24);
+    gameOverButtons.emplace_back(
+        sf::Vector2f(250, 800), sf::Vector2f(200, 50),
+        "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
+        [this]() {
+            std::cout << "Main Menu button clicked!" << std::endl;
+            menu.currentMenu = Menu::MenuState::MAIN_MENU;  // Return to main menu
+            menu.gameState = Menu::GameState::IN_MENU;  // Ensure the game state is set to the main menu
+            gameOver = false;  // Reset game over state
+        }
+    );
+    gameOverButtons.back().setText("MAIN MENU", font, 24);
+
+    for (auto& button : gameOverButtons) {
+        button.render(window);
+    }
+
+    window.draw(gameOverText);
+    window.display();
+}
+
+void GameManager::renderGameWin() {
+    window.clear(sf::Color(0, 0, 0));  // Black background
+    gameWinButtons.clear();  // Clear the buttons
+    gameWinButtons.reserve(1);  // Reserve space for one button
+
+    sf::Text gameWinText;
+    gameWinText.setFont(font);
+    gameWinText.setString("You Win!");
+    gameWinText.setCharacterSize(50);
+    gameWinText.setFillColor(sf::Color::Green);
+    gameWinText.setPosition(200, 400);  // Centered
+
+    gameWinButtons.emplace_back(
+        sf::Vector2f(250, 800), sf::Vector2f(200, 50),
+        "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
+        [this]() {
+            std::cout << "Main Menu button clicked!" << std::endl;
+            resetGame();  // Reset the game
+            menu.currentMenu = Menu::MenuState::MAIN_MENU;  // Return to main menu
+            menu.gameState = Menu::GameState::IN_MENU;  // Ensure the game state is set to the main menu
+            gameWin = false;  // Reset game over state
+        }
+    );
+    gameWinButtons.back().setText("MAIN MENU", font, 24);
+
+    for (auto& button : gameWinButtons) {
+        button.render(window);
+    }
+
+    window.draw(gameWinText);
+    window.display();
+}
+
+void GameManager::resetGame() {
+    // Reset the timer
+    startTimer();
+
+    // Clear the current bullets
+    bullets.clear();
+
+    // Recreate the bricks from the loadFromFile object
+    bricks = loadFromFile.createBricks(soundManager);
+
+    // Reset game over flag and resume game state
+    gameOver = false;
+    gameWin = false;
+    menu.gameState = Menu::GameState::IN_GAME;  // Resume the game
+}

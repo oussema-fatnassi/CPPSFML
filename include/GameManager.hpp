@@ -8,6 +8,7 @@
 #include "MathHelper.hpp"
 #include "Cannon.hpp"
 #include "Bullet.hpp"
+#include "Button.hpp"
 #include "Brick.hpp"
 #include "Menu.hpp"
 #include "Image.hpp"
@@ -38,6 +39,11 @@ private:
     sf::Font font;      // Font for rendering text
     vector<Image> walls;
 
+    vector<Button> gameOverButtons;
+    vector<Button> gameWinButtons;         
+    bool gameOver = false;
+    bool gameWin = false;
+    void resetGame();
 
     void handleEvents();           // Handle window events
     void updateGame();             // Update game logic
@@ -46,6 +52,10 @@ private:
     void createWalls();
     void renderWalls(sf::RenderWindow& window);
     void startTimer();
+    bool checkGameOver();
+    bool checkGameWin();
+    void renderGameOver();
+    void renderGameWin();
 };
 
 #endif

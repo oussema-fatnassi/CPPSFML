@@ -19,11 +19,11 @@ public:
     enum class GameState { IN_MENU, IN_GAME };  // Game state to switch between menus and game
     GameState gameState;
     bool continueClicked = false;
+    enum class MenuState { MAIN_MENU, INTRO_MENU, CREDITS_MENU };
+    MenuState currentMenu;
 
 private:
-    enum class MenuState { MAIN_MENU, INTRO_MENU, CREDITS_MENU };
 
-    MenuState currentMenu;
 
     sf::RenderWindow& window;
     vector<Button> buttons;         // Main menu buttons

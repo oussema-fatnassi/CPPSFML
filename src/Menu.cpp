@@ -20,11 +20,11 @@ void Menu::setupMainMenu() {
     buttons.clear();
     images.clear();
 
-    images.emplace_back(sf::Vector2f(25,100), sf::Vector2f(550, 160), "../assets/images/MainMenu.png");
+    images.emplace_back(sf::Vector2f(75,100), sf::Vector2f(550, 160), "../assets/images/MainMenu.png");
 
     // Start Button
     buttons.emplace_back(
-        sf::Vector2f(200, 300), sf::Vector2f(200, 50),
+        sf::Vector2f(250, 400), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
             std::cout << "Start button clicked!" << std::endl;
@@ -35,7 +35,7 @@ void Menu::setupMainMenu() {
 
     // Credits Button
     buttons.emplace_back(
-        sf::Vector2f(200, 400), sf::Vector2f(200, 50),
+        sf::Vector2f(250, 500), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
             std::cout << "Credits button clicked!" << std::endl;
@@ -46,7 +46,7 @@ void Menu::setupMainMenu() {
 
     // Exit Button
     buttons.emplace_back(
-        sf::Vector2f(200, 500), sf::Vector2f(200, 50),
+        sf::Vector2f(250, 600), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
             window.close();  // Exit the application
@@ -61,11 +61,12 @@ void Menu::setupIntroMenu() {
 
     // Continue Button
     buttonsIntro.emplace_back(
-        sf::Vector2f(200, 500), sf::Vector2f(200, 50),
+        sf::Vector2f(250, 700), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
             std::cout << "Continue button clicked!" << std::endl;
             gameState = GameState::IN_GAME;  // Launch the game
+            continueClicked = true;
         }
     );
     buttonsIntro.back().setText("CONTINUE", font, 24);
@@ -77,7 +78,7 @@ void Menu::setupCreditsMenu() {
 
     // Back Button
     buttonsCredits.emplace_back(
-        sf::Vector2f(200, 700), sf::Vector2f(200, 50),
+        sf::Vector2f(250, 700), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
             std::cout << "Back button clicked!" << std::endl;
@@ -140,6 +141,7 @@ void Menu::update() {
         default:
             break;
     }
+
 }
 
 // Render the appropriate menu

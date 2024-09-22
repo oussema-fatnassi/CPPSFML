@@ -18,6 +18,7 @@ public:
     void drawCreditsMenu();
     enum class GameState { IN_MENU, IN_GAME };  // Game state to switch between menus and game
     GameState gameState;
+    bool continueClicked = false;
 
 private:
     enum class MenuState { MAIN_MENU, INTRO_MENU, CREDITS_MENU };

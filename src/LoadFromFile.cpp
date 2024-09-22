@@ -64,13 +64,15 @@ vector<Brick> LoadFromFile::createBricks(SoundManager& soundManager) const {
     vector<Brick> bricks;
     const float brickWidth = 60.0f;
     const float brickHeight = 60.0f;
+    const float wallOffsetTop = 100.0f;  // Offset for the top wall
+    const float wallOffsetSide = 50.0f; // Offset for the left side wall
 
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             int value = grid[i][j];
             if (value != 0) {  // Assuming 0 means no brick
-                float x = j * brickWidth;
-                float y = i * brickHeight;
+                float x = j * brickWidth + wallOffsetSide;  // Adjust X-position to account for left wall
+                float y = i * brickHeight + wallOffsetTop;  // Adjust Y-position to start below the top walls
                 sf::Vector2f position(x, y);
                 sf::Vector2f dimension(brickWidth, brickHeight);
                 string imagePath = getImagePath(value);
@@ -81,3 +83,5 @@ vector<Brick> LoadFromFile::createBricks(SoundManager& soundManager) const {
     }
     return bricks;
 }
+
+

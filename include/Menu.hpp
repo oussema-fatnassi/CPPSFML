@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Button.hpp"
+#include "Image.hpp"
+using namespace std;
 
 class Menu {
 public:
@@ -23,9 +25,10 @@ private:
     MenuState currentMenu;
 
     sf::RenderWindow& window;
-    std::vector<Button> buttons;         // Main menu buttons
-    std::vector<Button> buttonsIntro;    // Intro menu buttons
-    std::vector<Button> buttonsCredits;  // Credits menu buttons
+    vector<Button> buttons;         // Main menu buttons
+    vector<Button> buttonsIntro;    // Intro menu buttons
+    vector<Button> buttonsCredits;  // Credits menu buttons
+    vector<Image> images;               
 
     sf::Font font;  // Font for button text
 

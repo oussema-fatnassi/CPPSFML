@@ -18,6 +18,9 @@ Menu::Menu(sf::RenderWindow& window) : window(window), currentMenu(MenuState::MA
 // Set up the main menu buttons
 void Menu::setupMainMenu() {
     buttons.clear();
+    images.clear();
+
+    images.emplace_back(sf::Vector2f(25,100), sf::Vector2f(550, 160), "../assets/images/MainMenu.png");
 
     // Start Button
     buttons.emplace_back(
@@ -141,8 +144,8 @@ void Menu::update() {
 
 // Render the appropriate menu
 void Menu::render() {
-    window.clear();
-
+    window.clear(sf::Color(255,255,255));
+    
     // Render based on the current menu state
     switch (currentMenu) {
         case MenuState::MAIN_MENU:
@@ -165,6 +168,9 @@ void Menu::render() {
 void Menu::drawMainMenu() {
     for (auto& button : buttons) {
         button.render(window);
+    }
+    for (auto& image : images) {
+        image.render(window);
     }
 }
 

@@ -107,7 +107,7 @@ Bullet Cannon::shoot() {
     int bulletWidth = 20;  // Set appropriate width
     int bulletHeight = 20; // Set appropriate height
     sf::Vector2f bulletDimension(bulletWidth, bulletHeight);
-    float bulletSpeed = .3f; // Adjust the speed as needed
+    float bulletSpeed = .6f; // Adjust the speed as needed
     int bulletDamage = 1; // Set damage amount
 
     // Get the cannon's current position and rotation

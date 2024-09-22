@@ -10,10 +10,12 @@
 #include "Bullet.hpp"
 #include "Brick.hpp"
 #include "Menu.hpp"
+#include "Image.hpp"
 #include <vector>
 #include <iostream>
 #include <iomanip>  // For formatting the timer
 #include <sstream>  // For string manipulation
+using namespace std;
 
 class GameManager {
 public:
@@ -34,12 +36,15 @@ private:
     sf::Clock clock;   // For tracking elapsed time
     sf::Text timerText; // For displaying the timer
     sf::Font font;      // Font for rendering text
+    vector<Image> walls;
 
 
     void handleEvents();           // Handle window events
     void updateGame();             // Update game logic
     void renderGame();             // Render the game
     void setupTimer();  
+    void createWalls();
+    void renderWalls(sf::RenderWindow& window);
 };
 
 #endif

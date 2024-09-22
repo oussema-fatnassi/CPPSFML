@@ -9,6 +9,7 @@
 #include "Cannon.hpp"
 #include "Bullet.hpp"
 #include "Brick.hpp"
+#include "Menu.hpp"
 #include <vector>
 #include <iostream>
 #include <iomanip>  // For formatting the timer
@@ -25,6 +26,7 @@ private:
     LoadFromFile loadFromFile;
     SoundManager soundManager;
     Cannon cannon;
+    Menu menu;
     std::vector<Bullet> bullets;
     std::vector<Brick> bricks;
     bool quit;

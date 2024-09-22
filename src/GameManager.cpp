@@ -8,7 +8,7 @@ GameManager::GameManager()
     : window(sf::VideoMode(600, 900), "Breakout"), 
     loadFromFile("../assets/map/matrix.txt"),
     cannon(sf::Vector2f(300, 900), sf::Vector2f(100, 200), "../assets/images/cannon.png"),
-    quit(false) {
+    quit(false), menu(window) {
     
     loadFromFile.loadGrid();
     loadFromFile.printGrid();
@@ -19,8 +19,8 @@ GameManager::GameManager()
     soundManager.loadSound("stone-crack", "../assets/sounds/stoneCrack.ogg");
 
     // Load the font and setup the timer
-    if (!font.loadFromFile("../assets/fonts/ClearSansBold.ttf")) {
-        std::cerr << "Error: could not load font ClearSansBold.ttf" << std::endl;
+    if (!font.loadFromFile("../assets/fonts/Minecraft.ttf")) {
+        std::cerr << "Error: could not load font Minecraft.ttf" << std::endl;
     }
     setupTimer();
 }
@@ -37,8 +37,14 @@ void GameManager::setupTimer() {
 void GameManager::run() {
     while (window.isOpen()) {
         handleEvents();
-        updateGame();
-        renderGame();
+
+        if (menu.gameState == Menu::GameState::IN_MENU) {
+            menu.update();
+            menu.render();
+        } else if (menu.gameState == Menu::GameState::IN_GAME) {
+            updateGame();
+            renderGame();
+        }
     }
 }
 

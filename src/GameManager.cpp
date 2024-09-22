@@ -7,7 +7,7 @@ Class definition for GameManager, a class that manages the game loop and game ob
 GameManager::GameManager() 
     : window(sf::VideoMode(600, 900), "Breakout"), 
     loadFromFile("../assets/map/matrix.txt"),
-    cannon(sf::Vector2f(300, 900), sf::Vector2f(100, 200), "../assets/images/cannon.png"),
+    cannon(sf::Vector2f(300, 900), sf::Vector2f(150, 150), "../assets/images/Crossbow.png"),
     quit(false), menu(window) {
     
     loadFromFile.loadGrid();

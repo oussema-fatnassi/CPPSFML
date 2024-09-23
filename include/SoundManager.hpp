@@ -11,6 +11,7 @@ public:
     SoundManager();
     void loadSound(const std::string& name, const std::string& filePath);
     void playSound(const std::string& name);
+    void setVolume(const std::string& name, float volume);
     
 private:
     std::map<std::string, sf::SoundBuffer> soundBuffers;

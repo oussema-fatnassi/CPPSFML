@@ -54,7 +54,7 @@ Game Engine
 ## How to Play:
   - Run the executable generated in the build directory.
   - Use the mouse to aim the cannon.
-  - Left-click to shoot a ball.
+  - Right-click to shoot a ball.
   - Destroy all the bricks to win the game.
 
 

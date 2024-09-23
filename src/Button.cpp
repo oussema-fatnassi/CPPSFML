@@ -1,7 +1,10 @@
 #include "Button.hpp"
 #include "AssetManager.hpp"
 
-// Button constructor
+/*
+    Button class implementation for the game's buttons
+*/
+
 Button::Button(sf::Vector2f position, sf::Vector2f dimension, const string& normalImage, const string& hoverImage, const string& pressedImage, const function<void()>& onClick)
     : GameObject(position, dimension, normalImage), currentState(ButtonState::NORMAL), onClick(onClick) {
     

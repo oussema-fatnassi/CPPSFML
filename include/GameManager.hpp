@@ -14,16 +14,16 @@
 #include "Image.hpp"
 #include <vector>
 #include <iostream>
-#include <iomanip>  // For formatting the timer
-#include <sstream>  // For string manipulation
+#include <iomanip>  
+#include <sstream> 
 using namespace std;
 
 class GameManager {
 public:
-    GameManager();
-    void run(); // Main game loop
+    GameManager();                                              // Constructor          
+    void run();                                                 // Main game loop
 
-private:
+private:                                                        // Member variables
     sf::RenderWindow window;
     MathHelper mathHelper;
     LoadFromFile loadFromFile;
@@ -34,9 +34,9 @@ private:
     std::vector<Brick> bricks;
     bool quit;
 
-    sf::Clock clock;   // For tracking elapsed time
-    sf::Text timerText; // For displaying the timer
-    sf::Font font;      // Font for rendering text
+    sf::Clock clock;   
+    sf::Text timerText;
+    sf::Font font;      
     vector<Image> walls;
 
     vector<Button> gameOverButtons;
@@ -45,9 +45,9 @@ private:
     bool gameWin = false;
     void resetGame();
 
-    void handleEvents();           // Handle window events
-    void updateGame();             // Update game logic
-    void renderGame();             // Render the game
+    void handleEvents();                                        // Handle window events
+    void updateGame();             
+    void renderGame();             
     void setupTimer();  
     void createWalls();
     void renderWalls(sf::RenderWindow& window);

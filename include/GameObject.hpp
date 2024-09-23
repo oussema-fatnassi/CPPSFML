@@ -8,8 +8,8 @@ using namespace std;
 
 class GameObject {  
 public:
-    virtual ~GameObject() = default;                                                              // Destructor    
-    virtual void render(sf::RenderWindow& window) = 0;  // Pass window as a parameter in render
+    virtual ~GameObject() = default;                                        // Destructor    
+    virtual void render(sf::RenderWindow& window) = 0;                      // Pass window as a parameter in render
     void loadTexture(const string& imagePath);                             
 
     sf::Vector2f getPosition() const;                                       // Getters

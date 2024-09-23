@@ -12,29 +12,18 @@
 #include <string>
 using namespace std;
 
-// Constants
-const int SIZE = 10;
+const int SIZE = 10;                                                    // Constants
 
 class LoadFromFile {
 public:
-    // Constructor
-    LoadFromFile(const string& path);
-
-    // Load a grid from the file
+    LoadFromFile(const string& path);                                   // Constructor  
     void loadGrid();
-
-    // Print the grid
     void printGrid() const;
-
-    // Create a vector of bricks from the grid
     vector<Brick> createBricks(SoundManager& soundManager) const;
 
 private:
-    // Helper function to get the image path for a value
-    string getImagePath(int value) const;
-
-    // Member variables
-    string filePath;
+    string getImagePath(int value) const;                               // Get the image path
+    string filePath;                                                    // Member variables
     vector<vector<int>> grid;
     unordered_map<int, string> imagePaths;
 };

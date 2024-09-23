@@ -11,10 +11,8 @@ class Brick;
 
 class TrajectoryManager  {
 public:
-    TrajectoryManager();
-
+    TrajectoryManager();                                 // Constructor
     void updateTrajectory(sf::Vector2f startPoint, sf::Vector2f direction, sf::RenderWindow& window, float maxY);
-
     virtual void onBorderCollision(sf::Vector2f& trajectoryPoint, sf::Vector2f& direction, const sf::Vector2u& windowSize) ;
 
 private:

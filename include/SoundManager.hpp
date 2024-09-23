@@ -8,13 +8,13 @@
 
 class SoundManager {
 public:
-    SoundManager();
+    SoundManager();                                             // Constructor
     void loadSound(const std::string& name, const std::string& filePath);
     void playSound(const std::string& name);
-    void setVolume(const std::string& name, float volume);
+    void setVolume(const std::string& name, float volume);      // Setter
     
 private:
-    std::map<std::string, sf::SoundBuffer> soundBuffers;
+    std::map<std::string, sf::SoundBuffer> soundBuffers;        // Member variables
     std::map<std::string, sf::Sound> sounds;
 };
 

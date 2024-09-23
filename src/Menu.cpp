@@ -2,7 +2,10 @@
 #include "AssetManager.hpp"
 #include <iostream>
 
-// Menu constructor
+/*
+Menu class is used to render the main menu of the game. It contains buttons for the user to interact with.
+*/
+
 Menu::Menu(sf::RenderWindow& window) : window(window), currentMenu(MenuState::MAIN_MENU) {
     // Load font for buttons
     if (!font.loadFromFile("../assets/fonts/Minecraft.ttf")) {
@@ -26,7 +29,6 @@ void Menu::setupMainMenu() {
         sf::Vector2f(200, 400), sf::Vector2f(300, 100),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
-            std::cout << "Start button clicked!" << std::endl;
             gameState = GameState::IN_GAME;  // Launch the game
             continueClicked = true;
         }

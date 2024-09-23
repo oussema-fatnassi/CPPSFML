@@ -19,7 +19,7 @@ public:
     enum class GameState { IN_MENU, IN_GAME };  // Game state to switch between menus and game
     GameState gameState;
     bool continueClicked = false;
-    enum class MenuState { MAIN_MENU, INTRO_MENU, CREDITS_MENU };
+    enum class MenuState { MAIN_MENU};
     MenuState currentMenu;
 
 private:
@@ -34,8 +34,6 @@ private:
     sf::Font font;  // Font for button text
 
     void setupMainMenu();
-    void setupIntroMenu();
-    void setupCreditsMenu();
 };
 
 #endif // MENU_HPP

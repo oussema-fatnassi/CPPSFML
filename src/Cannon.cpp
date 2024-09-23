@@ -4,8 +4,8 @@
 Class definition for Cannon, a class that represents the cannon in the game.
 */
 
-Cannon::Cannon(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath)
-    : GameObject(position, dimension, imagePath) {
+Cannon::Cannon(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath,  SoundManager* soundManager)
+    : GameObject(position, dimension, imagePath), soundManager(soundManager) {
     loadTexture(imagePath);
     sprite.setOrigin(dimension.x / 2.f, dimension.y /1.23f); 
     sprite.setRotation(rotation);
@@ -52,7 +52,7 @@ void Cannon::drawTrajectory(sf::RenderWindow& window) {
     float angle = getRotation();
     float radians = (angle - 90.f) * 3.14159265f / 180.0f;
     sf::Vector2f direction(std::cos(radians), std::sin(radians));
-    float brickTopY = 300.0f;
+    float brickTopY = 580.0f;
     trajectoryManager.updateTrajectory(cannonPos, direction, window, brickTopY);    
 }
 
@@ -102,7 +102,6 @@ sf::Vector2f Cannon::reflectDirection(const sf::Vector2f& direction, const sf::V
 
 // Shoot a bullet from the cannon
 Bullet Cannon::shoot() {
-    cout << "Shooting!" << endl;
     // Set bullet properties: position, rotation, speed, damage
     int bulletWidth = 20;  // Set appropriate width
     int bulletHeight = 20; // Set appropriate height
@@ -121,7 +120,7 @@ Bullet Cannon::shoot() {
 
     // Create a bullet with the correct rotation
     Bullet bullet(sf::Vector2f(bulletPosition), sf::Vector2f(bulletDimension), "../assets/images/Ball.png", angle, bulletSpeed, bulletDamage);
-
+    soundManager->playSound("crossbow"); 
     return bullet;
 }
 

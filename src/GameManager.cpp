@@ -7,7 +7,7 @@ Class definition for GameManager, a class that manages the game loop and game ob
 GameManager::GameManager() 
     : window(sf::VideoMode(700, 900), "Breakout"), 
     loadFromFile("../assets/map/matrix.txt"),
-    cannon(sf::Vector2f(350, 850), sf::Vector2f(150, 150), "../assets/images/Crossbow.png"),
+    cannon(sf::Vector2f(350, 850), sf::Vector2f(150, 150), "../assets/images/Crossbow.png", &soundManager),
     quit(false), menu(window) {
     
     loadFromFile.loadGrid();
@@ -17,6 +17,8 @@ GameManager::GameManager()
     soundManager.loadSound("brick-crack", "../assets/sounds/brickCrack.ogg");
     soundManager.loadSound("ore-crack", "../assets/sounds/oreCrack.ogg");
     soundManager.loadSound("stone-crack", "../assets/sounds/stoneCrack.ogg");
+    soundManager.loadSound("crossbow", "../assets/sounds/Crossbow.wav");
+    soundManager.setVolume("crossbow", 30.f);
 
     // Load the font and setup the timer
     if (!font.loadFromFile("../assets/fonts/Minecraft.ttf")) {
@@ -90,8 +92,6 @@ void GameManager::run() {
     }
 }
 
-
-// Handle window events
 // Handle window events
 void GameManager::handleEvents() {
     sf::Event event;
@@ -102,7 +102,7 @@ void GameManager::handleEvents() {
         }
 
         // Handle right-click to shoot
-        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right ) {
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left ) {
             bullets.push_back(cannon.shoot());
         }
 
@@ -119,7 +119,6 @@ void GameManager::handleEvents() {
     }
 }
 
-
 // Update game logic
 void GameManager::updateGame() {
     cannon.updateRotation(window);
@@ -133,7 +132,6 @@ void GameManager::updateGame() {
             ++it;
         }
     }
-
     // Check game over or game win conditions
     if (checkGameOver()) {
         std::cout << "Game Over! Timer exceeded 1 minute." << std::endl;
@@ -305,13 +303,10 @@ void GameManager::renderGameWin() {
 void GameManager::resetGame() {
     // Reset the timer
     startTimer();
-
     // Clear the current bullets
     bullets.clear();
-
     // Recreate the bricks from the loadFromFile object
     bricks = loadFromFile.createBricks(soundManager);
-
     // Reset game over flag and resume game state
     gameOver = false;
     gameWin = false;

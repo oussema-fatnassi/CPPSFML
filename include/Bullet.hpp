@@ -11,21 +11,21 @@ using namespace std;
 
 class Bullet : public GameObject {
 public:
-    Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage);
-    ~Bullet(); // Destructor
+    Bullet(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, float rotation, float speed, int damage);    // Constructor
+    ~Bullet();                                                                                                                  // Destructor
 
-    void update(const sf::Vector2f& cannonPosition, std::vector<Brick>& bricks, std::vector<Image>& walls);
+    void update(const sf::Vector2f& cannonPosition, std::vector<Brick>& bricks, std::vector<Image>& walls);                     // Update the bullet
     void render(sf::RenderWindow& window) override;
 
-    bool isActive() const;  // Check if the bullet is still active
-    void deactivate();      // Deactivate the bullet
+    bool isActive() const;                                                                                                      // Check if the bullet is still active
+    void deactivate();                                                                                                          // Deactivate the bullet
 
 private:
-    float rotation;
+    float rotation;                                                                                                             // Member variables                  
     float speed;
     int damage;
-    bool active;  // Flag to track if the bullet is active
-    sf::Vector2f velocity;  // Velocity of the bullet
+    bool active;  
+    sf::Vector2f velocity;  
     void handleBrickCollision(std::vector<Brick>& bricks);
 };
 

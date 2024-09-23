@@ -6,24 +6,21 @@
 
 class Brick : public GameObject {
 public:
-    Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health, SoundManager* soundManager);
-    void render(sf::RenderWindow& window) override;
-    int getHealth() const;
-    sf::FloatRect getGlobalBounds() const;
-    sf::Vector2f getNormal(const sf::Vector2f& collisionPoint) const;
-
+    Brick(sf::Vector2f position, sf::Vector2f dimension, const string& imagePath, int health, SoundManager* soundManager);      // Constructor
+    void render(sf::RenderWindow& window) override;                                                                             // Render the brick         
     void reduceHealth(int damage);
-    
-    // Add this method to check if the brick is destroyed
     bool isDestroyed() const;
+    sf::FloatRect getGlobalBounds() const;                                                                                      // Getters
+    sf::Vector2f getNormal(const sf::Vector2f& collisionPoint) const;
+    int getHealth() const;
 
 private:
-    int health;
+    int health;                                                                                                                // Member variables                          
     int maxHealth;
     string texturePath;
-    string getCrackedTexturePath() const;
     SoundManager* soundManager;
     bool isCracked = false;
+    string getCrackedTexturePath() const;                                                                                       // Getters      
 };
 
 #endif // BRICK_HPP

@@ -5,11 +5,11 @@
 
 class Image : public GameObject {
 public:
-    Image(sf::Vector2f position, sf::Vector2f dimension, const std::string& imagePath);
-    ~Image() = default;
+    Image(sf::Vector2f position, sf::Vector2f dimension, const std::string& imagePath);         // Constructor
+    ~Image() = default;                                                                         // Destructor        
 
-    void render(sf::RenderWindow& window) override;  // Use the inherited render function
-    sf::FloatRect getGlobalBounds() const;  // Get the global bounds of the image
+    void render(sf::RenderWindow& window) override;  
+    sf::FloatRect getGlobalBounds() const;                                                      // Getter
 };
 
 #endif  // IMAGE_HPP

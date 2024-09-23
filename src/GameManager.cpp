@@ -102,7 +102,7 @@ void GameManager::handleEvents() {
         }
 
         // Handle right-click to shoot
-        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left ) {
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && bullets.size() == 0) {
             bullets.push_back(cannon.shoot());
         }
 
@@ -134,12 +134,10 @@ void GameManager::updateGame() {
     }
     // Check game over or game win conditions
     if (checkGameOver()) {
-        std::cout << "Game Over! Timer exceeded 1 minute." << std::endl;
         return;
     }
 
     if (checkGameWin()) {
-        std::cout << "Game Win! All bricks destroyed." << std::endl;
         return;
     }
 }
@@ -212,7 +210,6 @@ void GameManager::startTimer() {
 bool GameManager::checkGameOver() {
     sf::Time elapsed = clock.getElapsedTime();
     if (elapsed.asSeconds() >= 180 && !bricks.empty()) {
-        std::cout << "Game Over! Timer exceeded 1 minute." << std::endl;
         return true;
     }
     return false;
@@ -220,7 +217,6 @@ bool GameManager::checkGameOver() {
 
 bool GameManager::checkGameWin() {
     if (bricks.empty()) {
-        std::cout << "You Win! All bricks destroyed." << std::endl;
         return true;
     }
     return false;
@@ -242,7 +238,6 @@ void GameManager::renderGameOver() {
         sf::Vector2f(250, 700), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
-            std::cout << "Restart button clicked!" << std::endl;
             resetGame();  // Reset the game
         }
     );
@@ -251,7 +246,6 @@ void GameManager::renderGameOver() {
         sf::Vector2f(250, 800), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
-            std::cout << "Main Menu button clicked!" << std::endl;
             menu.currentMenu = Menu::MenuState::MAIN_MENU;  // Return to main menu
             menu.gameState = Menu::GameState::IN_MENU;  // Ensure the game state is set to the main menu
             gameOver = false;  // Reset game over state
@@ -283,7 +277,6 @@ void GameManager::renderGameWin() {
         sf::Vector2f(250, 800), sf::Vector2f(200, 50),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
-            std::cout << "Main Menu button clicked!" << std::endl;
             resetGame();  // Reset the game
             menu.currentMenu = Menu::MenuState::MAIN_MENU;  // Return to main menu
             menu.gameState = Menu::GameState::IN_MENU;  // Ensure the game state is set to the main menu

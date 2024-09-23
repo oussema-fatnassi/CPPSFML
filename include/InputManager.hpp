@@ -6,12 +6,12 @@
 class InputManager {
 
 public:
-    static InputManager& getInstance();
-    sf::Vector2i getMousePosition(sf::RenderWindow& window);
+    static InputManager& getInstance();                             // Singleton pattern
+    sf::Vector2i getMousePosition(sf::RenderWindow& window);        // Get the mouse position
 
 private:
-    InputManager();
-    InputManager(const InputManager&);
+    InputManager();                                                 // Constructor
+    InputManager(const InputManager&);                              // Copy constructor    
 };
 
 #endif // INPUTMANAGER_HPP

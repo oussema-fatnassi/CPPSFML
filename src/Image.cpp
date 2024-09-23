@@ -1,5 +1,9 @@
 #include "Image.hpp"
 
+/*
+Image class is a derived class from GameObject. It is used to render images on the screen.
+*/
+
 Image::Image(sf::Vector2f position, sf::Vector2f dimension, const std::string& imagePath)
     : GameObject(position, dimension, imagePath) {
 }

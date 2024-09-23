@@ -11,8 +11,6 @@ Menu::Menu(sf::RenderWindow& window) : window(window), currentMenu(MenuState::MA
 
     // Set up buttons for the main menu
     setupMainMenu();
-    setupIntroMenu();
-    setupCreditsMenu();
 }
 
 // Set up the main menu buttons
@@ -20,72 +18,29 @@ void Menu::setupMainMenu() {
     buttons.clear();
     images.clear();
 
+    images.emplace_back(sf::Vector2f(0, 0), sf::Vector2f(700, 900), "../assets/images/Background.png");
     images.emplace_back(sf::Vector2f(75,100), sf::Vector2f(550, 160), "../assets/images/MainMenu.png");
 
     // Start Button
     buttons.emplace_back(
-        sf::Vector2f(250, 400), sf::Vector2f(200, 50),
+        sf::Vector2f(200, 400), sf::Vector2f(300, 100),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
             std::cout << "Start button clicked!" << std::endl;
-            currentMenu = MenuState::INTRO_MENU;
+            gameState = GameState::IN_GAME;  // Launch the game
+            continueClicked = true;
         }
     );
     buttons.back().setText("START", font, 24);
-
-    // Credits Button
-    buttons.emplace_back(
-        sf::Vector2f(250, 500), sf::Vector2f(200, 50),
-        "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
-        [this]() {
-            std::cout << "Credits button clicked!" << std::endl;
-            currentMenu = MenuState::CREDITS_MENU;
-        }
-    );
-    buttons.back().setText("CREDITS", font, 24);
-
     // Exit Button
     buttons.emplace_back(
-        sf::Vector2f(250, 600), sf::Vector2f(200, 50),
+        sf::Vector2f(200, 600), sf::Vector2f(300, 100),
         "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
         [this]() {
             window.close();  // Exit the application
         }
     );
     buttons.back().setText("EXIT", font, 24);
-}
-
-// Set up the intro menu with the continue button
-void Menu::setupIntroMenu() {
-    buttonsIntro.clear();
-
-    // Continue Button
-    buttonsIntro.emplace_back(
-        sf::Vector2f(250, 700), sf::Vector2f(200, 50),
-        "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
-        [this]() {
-            std::cout << "Continue button clicked!" << std::endl;
-            gameState = GameState::IN_GAME;  // Launch the game
-            continueClicked = true;
-        }
-    );
-    buttonsIntro.back().setText("CONTINUE", font, 24);
-}
-
-// Set up the credits menu with the back button
-void Menu::setupCreditsMenu() {
-    buttonsCredits.clear();
-
-    // Back Button
-    buttonsCredits.emplace_back(
-        sf::Vector2f(250, 700), sf::Vector2f(200, 50),
-        "../assets/images/button_normal.png", "../assets/images/button_hover.png", "../assets/images/button_pressed.png",
-        [this]() {
-            std::cout << "Back button clicked!" << std::endl;
-            currentMenu = MenuState::MAIN_MENU;  // Return to the main menu
-        }
-    );
-    buttonsCredits.back().setText("BACK", font, 24);
 }
 
 // Handle user input events (mouse clicks)
@@ -98,16 +53,6 @@ void Menu::handleEvents(sf::Event event) {
             case MenuState::MAIN_MENU:
                 for (auto& button : buttons) {
                     button.update(mousePos, true);  // Handle button clicks
-                }
-                break;
-            case MenuState::INTRO_MENU:
-                for (auto& button : buttonsIntro) {
-                    button.update(mousePos, true);
-                }
-                break;
-            case MenuState::CREDITS_MENU:
-                for (auto& button : buttonsCredits) {
-                    button.update(mousePos, true);
                 }
                 break;
             default:
@@ -128,20 +73,9 @@ void Menu::update() {
                 button.update(mousePos, mousePressed);
             }
             break;
-        case MenuState::INTRO_MENU:
-            for (auto& button : buttonsIntro) {
-                button.update(mousePos, mousePressed);
-            }
-            break;
-        case MenuState::CREDITS_MENU:
-            for (auto& button : buttonsCredits) {
-                button.update(mousePos, mousePressed);
-            }
-            break;
         default:
             break;
     }
-
 }
 
 // Render the appropriate menu
@@ -153,39 +87,18 @@ void Menu::render() {
         case MenuState::MAIN_MENU:
             drawMainMenu();
             break;
-        case MenuState::INTRO_MENU:
-            drawIntroMenu();
-            break;
-        case MenuState::CREDITS_MENU:
-            drawCreditsMenu();
-            break;
         default:
             break;
     }
-
     window.display();
 }
 
 // Draw the main menu
 void Menu::drawMainMenu() {
-    for (auto& button : buttons) {
-        button.render(window);
-    }
     for (auto& image : images) {
         image.render(window);
     }
-}
-
-// Draw the intro menu
-void Menu::drawIntroMenu() {
-    for (auto& button : buttonsIntro) {
-        button.render(window);
-    }
-}
-
-// Draw the credits menu
-void Menu::drawCreditsMenu() {
-    for (auto& button : buttonsCredits) {
+    for (auto& button : buttons) {
         button.render(window);
     }
 }

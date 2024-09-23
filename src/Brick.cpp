@@ -22,19 +22,23 @@ int Brick::getHealth() const {
 void Brick::reduceHealth(int damage) {
     health -= damage;
 
+    // Determine which crack sound to play based on maxHealth
+    std::string crackSound = (maxHealth >= 5) ? "ore-crack" : "brick-crack";
+
     // Change texture to cracked if health is at half or below
     if (health <= maxHealth / 2 && maxHealth > 1 && !isCracked) { // Check if it's not cracked yet
         string crackedTexturePath = getCrackedTexturePath();
         loadTexture(crackedTexturePath);
-        soundManager->playSound("brick-crack");
+        soundManager->playSound(crackSound); // Play the appropriate crack sound
         isCracked = true; // Set the flag to true
     }
 
     // Check if the brick is destroyed
     if (isDestroyed()) {
-        soundManager->playSound("brick-crack"); // Play destroy sound
+        soundManager->playSound(crackSound); // Play the appropriate destroy sound
     }
 }
+
 
 // Check if the brick is destroyed
 bool Brick::isDestroyed() const {

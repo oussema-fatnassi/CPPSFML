@@ -27,3 +27,13 @@ void SoundManager::playSound(const std::string& name) {
         std::cerr << "Sound not found: " << name << std::endl;
     }
 }
+
+// Set the volume of the sound with the given name
+void SoundManager::setVolume(const std::string& name, float volume) {
+    if (sounds.find(name) != sounds.end()) {
+        sounds[name].setVolume(volume);
+    } else {
+        // Handle sound not found
+        std::cerr << "Sound not found: " << name << std::endl;
+    }
+}
